@@ -141,3 +141,108 @@ input:focus,textarea:focus,select:focus{border-color:#7aa7ff;box-shadow:0 0 0 4p
 
 @media(max-width:850px){.two-col{grid-template-columns:1fr}.side{display:none}.nav-links{display:none}}
 @media(max-width:620px){.nav{padding:0 14px}.page{width:94%;margin-top:16px}.hero{align-items:flex-start;flex-direction:column}.post-card{grid-template-columns:54px minmax(0,1fr)}.community-grid{grid-template-columns:1fr}.auth-card{padding:24px}.toolbar{align-items:flex-start;flex-direction:column}.toolbar-controls{width:100%}.toolbar input,.toolbar select{width:100%}.stats{grid-template-columns:1fr 1fr}}
+
+/* Notifications Styling */
+.notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--brand);
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--surface);
+  line-height: 1;
+}
+
+.notification-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: transform 0.16s, background 0.16s, border-color 0.16s;
+  border: 1px solid var(--line);
+}
+
+.notification-card:hover {
+  background: var(--surface2);
+  transform: translateY(-1px);
+}
+
+.notification-card.unread {
+  background: color-mix(in srgb, var(--blue) 5%, var(--surface));
+  border-left: 4px solid var(--blue);
+}
+
+.notif-icon-wrap {
+  font-size: 20px;
+  padding-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+}
+
+.notif-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notif-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.notif-snippet {
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--surface2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.notif-time {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.notif-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-read-mark {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: background 0.16s, color 0.16s;
+}
+
+.btn-read-mark:hover {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}

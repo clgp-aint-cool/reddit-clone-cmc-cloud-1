@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Notifications - Clouddit</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <main class="page narrow">
+    <div class="hero card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <p class="eyebrow">INBOX</p>
+        <h1>Notifications</h1>
+        <p class="muted">Stay up to date with replies, votes, mentions, and community posts.</p>
+      </div>
+      <button id="markAllReadBtn" class="btn btn-soft" style="display:none;" onclick="markAllNotificationsRead()">Mark all as read</button>
+    </div>
+    
+    <div id="notificationsFeed" class="feed">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
+    
+    <div id="paginationWrap" style="text-align: center; margin-top: 24px; display: none;">
+      <button id="loadMoreBtn" class="btn btn-soft" onclick="loadMoreNotifications()">Load more</button>
+    </div>
+  </main>
+
+  <script src="/assets/common.js"></script>
+  <script src="/assets/notifications.js"></script>
+</body>
+</html>

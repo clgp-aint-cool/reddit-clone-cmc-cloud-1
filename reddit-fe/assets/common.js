@@ -52,8 +52,74 @@ function renderNav(){
   const u=getUser(),n=document.getElementById("navbar");if(!n)return;
   n.innerHTML=`<nav class="nav"><div class="nav-left"><a class="logo" href="/"><span class="logo-mark">C</span><span>Clouddit</span></a>
   <div class="nav-links"><a href="/">Home</a><a href="/communities.html">Communities</a><a href="/saved.html">Saved</a>${u?'<a href="/create.html">Create</a>':""}</div></div>
-  <div class="nav-right"><button class="btn btn-soft btn-icon" onclick="toggleTheme()" title="Theme">◐</button>
-  ${u?`<a class="btn btn-soft" href="/profile.html">u/${esc(u.username)}</a><button class="btn btn-primary" onclick="logout()">Logout</button>`:`<a class="btn btn-soft" href="/login.html">Log in</a><a class="btn btn-brand" href="/register.html">Sign up</a>`}</div></nav>`
+  <div class="nav-right">
+    <button class="btn btn-soft btn-icon" onclick="toggleTheme()" title="Theme">◐</button>
+    ${u?`
+      <a class="btn btn-soft btn-icon notif-bell-btn" href="/notifications.html" title="Notifications" style="position:relative; margin-right: 8px;">
+        🔔<span id="notif-badge" class="notif-badge" style="display:none;">0</span>
+      </a>
+      <a class="btn btn-soft" href="/profile.html">u/${esc(u.username)}</a>
+      <button class="btn btn-primary" onclick="logout()">Logout</button>
+    `:`
+      <a class="btn btn-soft" href="/login.html">Log in</a>
+      <a class="btn btn-brand" href="/register.html">Sign up</a>
+    `}
+  </div></nav>`
 }
+
+function loadSocketIo(callback) {
+  if (window.io) return callback();
+  const script = document.createElement("script");
+  script.src = "/socket.io/socket.io.js";
+  script.onload = callback;
+  script.onerror = () => console.error("Failed to load socket.io script");
+  document.head.appendChild(script);
+}
+
+let socket = null;
+function connectSocket() {
+  const token = getToken();
+  if (!token) return;
+  loadSocketIo(() => {
+    if (socket) socket.disconnect();
+    socket = io(location.origin, {
+      auth: { token }
+    });
+    socket.on("connect", () => {
+      console.log("Connected to Socket.io notification server");
+    });
+    socket.on("notification", (notif) => {
+      console.log("New real-time notification:", notif);
+      toast(notif.title, "info");
+      updateUnreadCount();
+      // Reload notifications page if user is on it
+      if (typeof loadNotifications === "function") {
+        loadNotifications(false); // fetch without overlay
+      }
+    });
+    socket.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
+    });
+  });
+}
+
+async function updateUnreadCount() {
+  if (!getToken()) return;
+  try {
+    const res = await api("/notifications/unread-count");
+    const badge = document.getElementById("notif-badge");
+    if (badge) {
+      if (res.unreadCount > 0) {
+        badge.textContent = res.unreadCount;
+        badge.style.display = "inline-flex";
+      } else {
+        badge.style.display = "none";
+      }
+    }
+  } catch (err) {
+    console.error("Failed to fetch unread count:", err);
+  }
+}
+
 function animateLinks(){document.addEventListener("click",e=>{const a=e.target.closest("a");if(!a||a.target==="_blank")return;const u=new URL(a.href,location.href);if(u.origin!==location.origin)return;e.preventDefault();document.body.classList.add("leaving");setTimeout(()=>location.href=u.href,150)})}
-applyTheme();renderNav();animateLinks();requestAnimationFrame(()=>document.body.classList.add("ready"));
+applyTheme();renderNav();connectSocket();updateUnreadCount();animateLinks();requestAnimationFrame(()=>document.body.classList.add("ready"));
