@@ -117,7 +117,7 @@ async function markAsRead(userId, notificationId = null) {
       return await Notification.findOneAndUpdate(
         { _id: notificationId, userId },
         { isRead: true },
-        { new: true }
+        { returnDocument: 'after' }
       );
     } else {
       return await Notification.updateMany(
