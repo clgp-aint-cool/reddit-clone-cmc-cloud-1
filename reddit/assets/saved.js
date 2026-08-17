@@ -1,0 +1,1 @@
+async function loadSaved(){try{const ps=await api("/posts"),ids=savedIds(),s=ps.filter(p=>ids.includes(p.id));savedFeed.innerHTML=s.length?s.map(postCard).join(""):'<div class="empty">No saved posts yet.</div>'}catch(e){savedFeed.innerHTML=`<div class="message">${esc(e.message)}</div>`}}loadSaved();

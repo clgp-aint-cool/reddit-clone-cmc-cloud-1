@@ -1,0 +1,4 @@
+const loginForm=document.getElementById("loginForm"),registerForm=document.getElementById("registerForm"),message=document.getElementById("message");
+function show(t,ok=false){message.textContent=t;message.classList.remove("hidden","success");if(ok)message.classList.add("success")}
+if(loginForm)loginForm.onsubmit=async e=>{e.preventDefault();try{const d=await api("/auth/login",{method:"POST",body:JSON.stringify({username:username.value.trim(),password:password.value})});saveAuth(d);toast("Logged in");setTimeout(()=>location.href="/",220)}catch(x){show(x.message)}};
+if(registerForm)registerForm.onsubmit=async e=>{e.preventDefault();try{await api("/auth/register",{method:"POST",body:JSON.stringify({username:username.value.trim(),email:email.value.trim(),password:password.value})});show("Account created. Redirecting...",true);setTimeout(()=>location.href="/login.html",650)}catch(x){show(x.message)}};

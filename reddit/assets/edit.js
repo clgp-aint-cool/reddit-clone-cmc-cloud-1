@@ -1,0 +1,7 @@
+if(requireAuth()){
+  const id=new URLSearchParams(location.search).get("id");let imageData=undefined,post=null;
+  async function init(){try{post=await api(`/posts/${id}`);if(!canEdit(post)){message.textContent="You can edit only your own post.";message.classList.remove("hidden");editForm.classList.add("hidden");return}title.value=post.title;content.value=post.content||"";cancelLink.href=`/post.html?id=${id}`;if(post.image_data)currentImage.innerHTML=`<div class="preview-box"><img src="${post.image_data}" alt="Current image"></div>`}catch(e){message.textContent=e.message;message.classList.remove("hidden")}}
+  imageInput.onchange=()=>{const f=imageInput.files[0];if(!f)return;if(f.size>1024*1024)return toast("Image must be under 1 MB","error");const r=new FileReader();r.onload=()=>{imageData=r.result;previewImage.src=imageData;previewBox.classList.remove("hidden")};r.readAsDataURL(f)}
+  editForm.onsubmit=async e=>{e.preventDefault();try{await api(`/posts/${id}`,{method:"PATCH",body:JSON.stringify({title:title.value.trim(),content:content.value.trim(),image_data:imageData})});toast("Post updated");setTimeout(()=>location.href=`/post.html?id=${id}`,220)}catch(e){toast(e.message,"error")}}
+  deleteBtn.onclick=async()=>{if(!confirm("Delete this post permanently?"))return;try{await api(`/posts/${id}`,{method:"DELETE"});toast("Post deleted");setTimeout(()=>location.href="/",220)}catch(e){toast(e.message,"error")}};init();
+}
