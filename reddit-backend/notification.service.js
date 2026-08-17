@@ -16,8 +16,11 @@ async function createNotification({
 }) {
   // Fail-safe wrapper: notifications should never crash the main application request
   try {
+    console.log(`[Notification Service] Incoming event. Type: "${type}", Sender: "u/${sender.username}" (ID: ${sender.id}), Recipient ID: ${userId}`);
+
     // Exclude notifications where user is acting on their own content
     if (Number(userId) === Number(sender.id)) {
+      console.log(`[Notification Service] Skipped: Actor and recipient are the same user (ID: ${userId}).`);
       return null;
     }
 
@@ -35,6 +38,7 @@ async function createNotification({
       if (existing) {
         // If the same sender triggered this again (e.g. toggling vote), do not create/update
         if (existing.sender.id === sender.id) {
+          console.log(`[Notification Service] Skipped upvote: Same sender (ID: ${sender.id}) upvote toggle.`);
           return existing;
         }
 
@@ -43,6 +47,8 @@ async function createNotification({
         existing.sender = { id: sender.id, username: sender.username };
         existing.createdAt = new Date();
         const savedNotif = await existing.save();
+        
+        console.log(`[Notification Service] MongoDB Updated (Deduplicated Upvote): Document ID: ${savedNotif._id}, New Title: "${savedNotif.title}"`);
         
         // Push updated notification real-time
         sendNotification(userId, savedNotif);
@@ -63,13 +69,14 @@ async function createNotification({
     });
 
     const savedNotif = await notification.save();
+    console.log(`[Notification Service] MongoDB Saved: Document ID: ${savedNotif._id}, Type: "${type}", Title: "${savedNotif.title}"`);
     
     // Push real-time event to socket room
     sendNotification(userId, savedNotif);
     
     return savedNotif;
   } catch (err) {
-    console.error('Error creating notification in service:', err);
+    console.error('[Notification Service] Error creating notification in MongoDB:', err);
     return null;
   }
 }
