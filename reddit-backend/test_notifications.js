@@ -1,3 +1,9 @@
+// Polyfill global crypto for Node.js environments where it is not exposed globally
+if (typeof globalThis.crypto === 'undefined' || typeof globalThis.crypto.randomUUID !== 'function') {
+  const cryptoModule = require('crypto');
+  globalThis.crypto = cryptoModule.webcrypto || cryptoModule;
+}
+
 require('dotenv').config();
 const mongoose = require('mongoose');
 
