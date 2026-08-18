@@ -70,7 +70,7 @@ function renderNav(){
 function loadSocketIo(callback) {
   if (window.io) return callback();
   const script = document.createElement("script");
-  script.src = "/socket.io/socket.io.js";
+  script.src = "https://cdn.socket.io/4.7.5/socket.io.min.js";
   script.onload = callback;
   script.onerror = () => console.error("Failed to load socket.io script");
   document.head.appendChild(script);
