@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clouddit Architecture & Deployment Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --panel-bg: #1e293b;
+      --border-color: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --brand-color: #6366f1;
+      --brand-hover: #4f46e5;
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --accent-red: #ef4444;
+      --sidebar-width: 320px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar Styles */
+    aside {
+      width: var(--sidebar-width);
+      background-color: #0b0f19;
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--brand-color), var(--accent-purple));
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: white;
+    }
+
+    .sidebar-title h1 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-title p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toc-item a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      padding: 10px 12px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .toc-item a:hover {
+      color: var(--text-main);
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .toc-item.active a {
+      color: var(--text-main);
+      background-color: rgba(99, 102, 241, 0.1);
+      border-left-color: var(--brand-color);
+    }
+
+    /* Main Content Styles */
+    main {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 48px 64px;
+      max-width: 1200px;
+    }
+
+    header {
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 24px;
+    }
+
+    .doc-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-blue {
+      background-color: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+    }
+
+    .badge-green {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+
+    .badge-purple {
+      background-color: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    ul,
+    ol {
+      margin-bottom: 20px;
+      padding-left: 24px;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Diagram Styles */
+    .diagram-container {
+      background-color: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .network-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+      margin-bottom: 32px;
+    }
+
+    .network-card {
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      transition: border-color 0.2s ease;
+    }
+
+    .network-card:hover {
+      border-color: var(--brand-color);
+    }
+
+    .network-card h4 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .network-card p {
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    /* Code & Config Styles */
+    pre {
+      background-color: #0b0f19;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #f43f5e;
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.02);
+      font-weight: 600;
+    }
+
+    td {
+      color: var(--text-muted);
+    }
+
+    /* Highlight callouts */
+    .callout {
+      border-left: 4px solid var(--brand-color);
+      background-color: rgba(99, 102, 241, 0.05);
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 24px;
+    }
+
+    .callout-warning {
+      border-left-color: var(--accent-red);
+      background-color: rgba(239, 68, 68, 0.05);
+    }
+
+    .callout h5 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+
+    /* Media query for responsiveness */
+    @media (max-width: 992px) {
+      aside {
+        display: none;
+        /* In a real build, we would add a menu toggle button */
+      }
+
+      main {
+        margin-left: 0;
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation Sidebar -->
+  <aside>
+    <div class="sidebar-header">
+      <div class="logo-badge">C</div>
+      <div class="sidebar-title">
+        <h1>Clouddit Docs</h1>
+        <p>Kiến Trúc CMC Cloud-HCM1</p>
+      </div>
+    </div>
+    <ul class="toc-list">
+      <li class="toc-item active"><a href="#tong-quan">1. Tổng quan & Sơ đồ</a></li>
+      <li class="toc-item"><a href="#subnets">2. Phân vùng Subnet</a></li>
+      <li class="toc-item"><a href="#frontend-setup">3. Triển khai Frontend</a></li>
+      <li class="toc-item"><a href="#backend-setup">4. Triển khai Backend</a></li>
+      <li class="toc-item"><a href="#database-setup">5. Cơ sở dữ liệu</a></li>
+      <li class="toc-item"><a href="#cloudflare-setup">6. Tên miền & Cloudflare</a></li>
+      <li class="toc-item"><a href="#realtime-flow">7. Luồng Real-time hoạt động</a></li>
+      <li class="toc-item"><a href="#deploy-steps">8. Hướng dẫn chạy từng bước</a></li>
+      <li class="toc-item"><a href="#troubleshooting">9. Các lỗi thường gặp (Troubleshooting)</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Document Container -->
+  <main>
+    <header>
+      <div class="doc-meta">
+        <span class="badge badge-purple">CMC Cloud</span>
+        <span class="badge badge-blue">Production Env</span>
+        <span>Cập nhật mới nhất: 18/08/2026</span>
+      </div>
+      <h1 style="font-size: 36px; font-weight: 700; margin-top: 8px;">Tài liệu Kiến Trúc Hệ Thống & Hướng Dẫn Vận Hành
+        Clouddit</h1>
+      <p style="margin-top: 12px; font-size: 16px;">Tài liệu đặc tả kiến trúc triển khai mạng phân tầng (Public -
+        Private - Isolated DB) và hướng dẫn chi tiết các bước thiết lập, vận hành hệ thống thông báo đa cơ sở dữ liệu
+        trên dịch vụ CMC Cloud - HCM1.</p>
+    </header>
+
+    <!-- SECTION 1 -->
+    <section id="tong-quan">
+      <h2>1. Tổng quan & Sơ đồ Kiến trúc</h2>
+      <p>Hệ thống Clouddit được thiết kế chạy trên trung tâm dữ liệu <strong>CMC Cloud - Phân vùng HCM1</strong>. Kiến
+        trúc sử dụng mô hình bảo mật nhiều lớp (Defense-in-depth) bằng cách phân tách hạ tầng thành 3 phân vùng mạng độc
+        lập, quản lý truy cập bằng các Tường lửa (pfSense/Security Groups) và cân bằng tải thông qua cặp Public -
+        Private Application Load Balancers (ALB).</p>
+
+      <div class="diagram-container">
+        <h3 style="margin-top: 0; margin-bottom: 16px;">Sơ đồ Topology Mạng và Triển khai</h3>
+        <!-- ASCII representation or descriptive chart -->
+        <pre style="background-color: #0b0f19; font-size: 12px; line-height: 1.4;">
+[ Internet Users ]
+       │  (HTTPS - Cổng 443)
+       ▼
+[ Cloudflare / DNS ] (Terminates SSL)
+       │  (HTTP - Cổng 80)
+       ▼
+[ Public ALB (HCM1 - Pool Frontend) ]
+       │  (HTTP - Cổng 80)
+       ▼
+[ Public Subnet / DMZ (192.168.4.0/24) ]
+   └──> Frontend EC2 (192.168.4.21) ── Nginx Proxy ──> (Chuyển tiếp /api/* và /socket.io/*)
+             │
+             ▼  (HTTP - Cổng 80)
+[ Private Subnet (192.168.6.0/24) ]
+   └──> Private ALB (192.168.6.126) 
+             │
+             ├──> Backend EC2-1 (192.168.6.229) ── [Node.js + PM2 Cổng 3000]
+             └──> Backend EC2-2 (192.168.6.76)  ── [Node.js + PM2 Cổng 3000]
+                       │
+                       ▼ (Truy cập dữ liệu nội bộ)
+[ Isolated Subnet - DB (192.168.7.0/24) ] ── (Chỉ cho phép Backend + Bastion)
+   ├──> PostgreSQL DB (192.168.7.251:5432)
+   ├──> MongoDB (192.168.7.155:27017)
+   └──> Redis Broker (192.168.7.117:6379)
+        </pre>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section id="subnets">
+      <h2>2. Đặc tả Phân vùng Subnet</h2>
+      <p>Mạng ảo VPC HCM1 được chia nhỏ thành 3 Subnet chính với chính sách định tuyến và bảo mật tường lửa nghiêm ngặt:
+      </p>
+
+      <div class="network-grid">
+        <div class="network-card">
+          <h4 style="color: var(--accent-blue);">● Public Subnet / DMZ</h4>
+          <p style="font-size: 12px; color: var(--brand-color); font-weight: 600; margin-bottom: 8px;">Dải IP:
+            192.168.4.0/24</p>
+          <p>Điểm đón traffic người dùng từ Internet. Chỉ mở cổng 80 cho Public ALB và cổng 22 (SSH) cho Bastion Jump
+            Host phục vụ quản trị hệ thống.</p>
+        </div>
+        <div class="network-card">
+          <h4 style="color: var(--accent-green);">● Private Subnet</h4>
+          <p style="font-size: 12px; color: var(--brand-color); font-weight: 600; margin-bottom: 8px;">Dải IP:
+            192.168.6.0/24</p>
+          <p>Nơi chạy ứng dụng chính (Backend Cluster). Không thể truy cập trực tiếp từ Internet. Chỉ chấp nhận các kết
+            nối chuyển tiếp từ IP của máy chủ Frontend.</p>
+        </div>
+        <div class="network-card">
+          <h4 style="color: var(--accent-purple);">● Isolated Subnet - DB</h4>
+          <p style="font-size: 12px; color: var(--brand-color); font-weight: 600; margin-bottom: 8px;">Dải IP:
+            192.168.7.0/24</p>
+          <p>Khu vực dữ liệu cô lập tuyệt đối. Không có định tuyến Internet (no IGW route). Chỉ mở cổng dữ liệu cho dải
+            mạng Private Subnet và chặn toàn bộ các dải IP khác.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section id="frontend-setup">
+      <h2>3. Thiết lập & Cấu hình Frontend</h2>
+      <p>Máy chủ <strong>Frontend EC2 (192.168.4.21)</strong> chạy hệ điều hành Ubuntu Server, cài đặt Nginx làm máy chủ
+        chứa tĩnh (Frontend Assets) và Reverse Proxy chuyển tiếp yêu cầu động.</p>
+
+      <h3>Cấu hình Nginx hoạt động thực tế trên Frontend:</h3>
+      <p>File cấu hình tại đường dẫn <code>/etc/nginx/sites-available/reddit</code> trên máy chủ Frontend:</p>
+      <pre><code>server {
+    listen 80;
+    server_name _;
+
+    root /var/www/reddit;
+    index index.html;
+
+    client_max_body_size 4m;
+
+    # Phục vụ các trang giao diện tĩnh (HTML/CSS/JS)
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Chuyển tiếp các request API về Private ALB của Backend
+    location /api/ {
+        proxy_pass http://192.168.6.126;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+    }
+
+    # Chuyển tiếp kết nối WebSocket / Polling của Socket.io về Private ALB
+    location /socket.io/ {
+        proxy_pass http://192.168.6.126;
+        proxy_http_version 1.1;
+
+        # Header đặc thù để nâng cấp kết nối HTTP sang WebSockets
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Tăng thời gian timeout để duy trì kết nối WebSocket bền vững
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+}</code></pre>
+      </code></pre>
+
+      <p>Sau khi thiết lập xong file cấu hình, chạy lệnh kiểm tra cú pháp và reload lại dịch vụ Nginx trên máy chủ
+        Frontend:</p>
+      <pre><code>sudo nginx -t
+sudo systemctl reload nginx</code></pre>
+
+    </section>
+
+    <!-- SECTION 4 -->
+    <section id="backend-setup">
+      <h2>4. Thiết lập & Cấu hình Backend Cluster</h2>
+      <p>Ứng dụng Backend được phân bổ chạy trên các cụm máy chủ Backend nằm trong nhóm Auto Scaling Group:
+        <strong>Backend EC2-1 (192.168.6.229)</strong> và <strong>Backend EC2-2 (192.168.6.76)</strong>.
+      </p>
+
+      <h3>A. Thiết lập cổng Node.js</h3>
+      <p>Mỗi instance backend khởi chạy dịch vụ HTTP-server Express bọc Socket.io lắng nghe ở cổng nội bộ
+        <strong>`3000`</strong>. Cổng này được quản lý qua trình quản lý tiến trình <strong>PM2</strong>.
+      </p>
+
+      <h3>B. Cấu hình Biến môi trường (.env) trên mỗi Backend EC2</h3>
+      <p>Nội dung file cấu hình <code>/var/www/reddit-clone-cmc-cloud-1/reddit-backend/.env</code>:</p>
+      <pre><code>PORT=3000
+SERVER_NAME=backend-1   # Đặt tên phân biệt trên mỗi máy (backend-2,...)
+
+# Kết nối PostgreSQL (Source of Truth)
+DB_HOST=192.168.7.251
+DB_PORT=5432
+DB_NAME=reddit_app
+DB_USER=reddit_user
+DB_PASSWORD=Grouphcm01
+
+# Khóa giải mã JWT Token
+JWT_SECRET=reddit-lab-secret-2026
+
+# Kết nối MongoDB (Document Store cho Notifications)
+MONGODB_URI=mongodb://admin:Grouphcm01@192.168.7.155:27017/reddit_notifications?authSource=admin
+
+# Kết nối Redis (Cache unread count & Pub/Sub broker)
+REDIS_URL=redis://192.168.7.117:6379</code></pre>
+
+      <h3>C. Cấu hình Nginx trên mỗi Backend EC2 (Proxy 2 lớp)</h3>
+      <p>File cấu hình tại đường dẫn <code>/etc/nginx/sites-available/reddit</code> trên các máy chủ Backend để chuyển
+        tiếp yêu cầu từ Private ALB cổng 80 nội bộ vào ứng dụng Node.js (cổng 3000):</p>
+      <pre><code>server {
+    listen 80;
+    server_name _;
+
+    client_max_body_size 4m;
+
+    # Proxy API requests to Node.js port 3000
+    location /api/ {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+    }
+
+    # Proxy WebSockets for Socket.io to Node.js port 3000
+    location /socket.io/ {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+}</code></pre>
+
+      <p>Sau khi thiết lập xong file cấu hình, chạy lệnh kiểm tra cú pháp và reload lại dịch vụ Nginx trên máy chủ
+        Backend:</p>
+      <pre><code>sudo nginx -t
+sudo systemctl reload nginx</code></pre>
+
+      <div class="callout">
+        <h5>💡 Quản lý tiến trình bằng PM2</h5>
+        <p>Ứng dụng backend được khởi chạy ở chế độ cluster của PM2 hoặc chế độ fork để tự động phục hồi khi có lỗi:</p>
+        <code
+          style="display: block; margin-top: 8px; color: var(--text-main);">pm2 start server.js --name "reddit-backend" --watch</code>
+      </div>
+    </section>
+
+    <!-- SECTION 5 -->
+    <section id="database-setup">
+      <h2>5. Cấu hình Phân vùng Cơ sở Dữ liệu</h2>
+      <p>Toàn bộ 3 cơ sở dữ liệu được đặt tại dải mạng an toàn tuyệt đối <strong>Isolated Subnet
+          (192.168.7.0/24)</strong> và được bảo vệ bởi tường lửa <strong>pfSense DB (192.168.7.6)</strong>.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Cơ sở dữ liệu</th>
+            <th>Địa chỉ IP & Port</th>
+            <th>Dữ liệu lưu trữ</th>
+            <th>Loại cấu trúc (Schema)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>PostgreSQL</strong></td>
+            <td><code>192.168.7.251:5432</code></td>
+            <td>Users, Posts, Comments, Votes, Subreddits, Quan hệ Join/Follow.</td>
+            <td>SQL (Structured), có khóa ngoại và ràng buộc kiểm tra toàn vẹn.</td>
+          </tr>
+          <tr>
+            <td><strong>MongoDB</strong></td>
+            <td><code>192.168.7.155:27017</code></td>
+            <td>Lịch sử thông báo của người dùng (Notifications).</td>
+            <td>NoSQL Document (JSON-like), lập chỉ mục TTL (30 ngày) tự động dọn dẹp.</td>
+          </tr>
+          <tr>
+            <td><strong>Redis</strong></td>
+            <td><code>192.168.7.117:6379</code></td>
+            <td>Đồng bộ Websocket (Pub/Sub) & Cache số thông báo chưa đọc của user.</td>
+            <td>In-memory Key-Value store, truy xuất tốc độ microsecond.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 6 -->
+    <section id="cloudflare-setup">
+      <h2>6. Tên miền & Cấu hình Cloudflare</h2>
+      <p>Người dùng ngoài Internet truy cập qua tên miền, chuyển tiếp qua Cloudflare trước khi đi tới Public ALB ở CMC
+        Cloud:</p>
+
+      <ul>
+        <li><strong>SSL/TLS Termination</strong>: Cloudflare giữ chứng chỉ HTTPS và giải mã kết nối an toàn (SSL
+          Termination), sau đó gửi traffic HTTP dạng thô (Cổng 80) về Public ALB.</li>
+        <li><strong>Chế độ mã hóa (SSL/TLS Encryption Mode)</strong>: Thiết lập ở chế độ <strong>Flexible</strong>
+          (Cloudflare nhận HTTPS từ client, nhưng giao tiếp HTTP cổng 80 với IP gốc của Public ALB).</li>
+        <li><strong>Hỗ trợ WebSocket</strong>: Đảm bảo tùy chọn <strong>WebSockets</strong> đã được gạt sang trạng thái
+          <strong>ON</strong> trong Dashboard của Cloudflare (Mục <em>Network -> WebSockets</em>) để các gói tin
+          handshake WebSocket không bị lọc bỏ.
+        </li>
+        <li><strong>Giải quyết CORS nguồn map</strong>: Đã điều chỉnh file <code>common.js</code> để load client-library
+          Socket.io từ CDN chính thức của Cloudflare <code>cdnjs</code> để giải quyết triệt để lỗi không tải được
+          source-map do cơ chế Access Control trên trình duyệt.</li>
+      </ul>
+    </section>
+
+    <!-- SECTION 7 -->
+    <section id="realtime-flow">
+      <h2>7. Luồng đồng bộ Real-time thông qua Redis Pub/Sub</h2>
+      <p>Khi có sự kiện tương tác mới cần gửi thông báo đẩy thời gian thực (real-time notification) cho một User đang
+        online, luồng xử lý diễn ra như sau:</p>
+
+      <ol>
+        <li>User gửi hành động bình luận (comment) -> Yêu cầu đi qua Nginx Frontend -> Chuyển tiếp vào Private ALB ->
+          Được định tuyến ngẫu nhiên tới máy chủ <strong>Backend EC2-2 (192.168.6.76)</strong>.</li>
+        <li><strong>Backend EC2-2</strong> xử lý: Lưu dữ liệu bình luận vào PostgreSQL, tạo và lưu Document thông báo
+          vào MongoDB.</li>
+        <li><strong>Đồng bộ qua Redis</strong>: Backend EC2-2 gọi hàm
+          <code>publishEvent('notifications', payload)</code> gửi bản tin chứa thông báo và người nhận lên Redis Server
+          trung tâm (192.168.7.117:6379).
+        </li>
+        <li>Redis Server phân phối thông tin tới tất cả máy chủ Backend đang đăng ký lắng nghe (Subscribe) thông qua
+          kênh <code>notifications</code>.</li>
+        <li>Cụm máy chủ <strong>Backend EC2-1 (192.168.6.229)</strong> nhận được bản tin từ Redis. Nó phát hiện ra kết
+          nối Socket.io của người nhận đang mở ở chính RAM cục bộ của nó. Nó gọi lệnh:
+          <pre
+            style="margin-top: 8px; margin-bottom: 8px;"><code>io.to('user:RecipientID').emit('notification', notification)</code></pre>
+          để đẩy tin nhắn thời gian thực trực tiếp về trình duyệt người dùng qua kênh WebSocket.
+        </li>
+      </ol>
+    </section>
+
+    <!-- SECTION 8 -->
+    <section id="deploy-steps">
+      <h2>8. Hướng dẫn chạy & Vận hành từng bước</h2>
+      <p>Làm theo các bước sau để vận hành hệ thống thông báo thời gian thực Clouddit trên hạ tầng production:</p>
+
+      <h3>Bước 1: Cấu hình và Chạy Backend</h3>
+      <ol>
+        <li>SSH vào từng máy chủ Backend (EC2-1, EC2-2) bằng Bastion Jump Host:
+          <pre><code>ssh -i &lt;key.pem&gt; user@101.99.59.233
+# Từ Bastion host, SSH tiếp vào Backend EC2:
+ssh user@192.168.6.229</code></pre>
+        </li>
+        <li>Truy cập thư mục backend, thiết lập file <code>.env</code> đầy đủ như mẫu ở <a href="#backend-setup">Mục
+            4</a>.</li>
+        <li>Chạy khởi tạo các bảng schema PostgreSQL (chạy lệnh này một lần duy nhất tại máy chủ đầu tiên khởi chạy):
+          <pre><code>node db-pg-init.js</code></pre>
+        </li>
+        <li>Chạy ứng dụng bằng <strong>PM2</strong>:
+          <pre><code>pm2 start server.js --name "reddit-backend"</code></pre>
+        </li>
+      </ol>
+
+      <h3>Bước 2: Triển khai Cấu hình Nginx trên Frontend</h3>
+      <ol>
+        <li>SSH vào máy chủ <strong>Frontend EC2 (192.168.4.21)</strong>.</li>
+        <li>Mở file cấu hình Nginx đang chạy thực tế:
+          <pre><code>sudo nano /etc/nginx/sites-available/reddit</code></pre>
+        </li>
+        <li>Dán nội dung cấu hình proxy đã cập nhật cổng và WebSockets ở <a href="#frontend-setup">Mục 3</a>.</li>
+        <li>Kiểm tra tính hợp lệ của cấu hình Nginx và khởi động lại dịch vụ:
+          <pre><code>sudo nginx -t
+sudo systemctl reload nginx</code></pre>
+        </li>
+      </ol>
+
+      <h3>Bước 3: Deploy Giao diện Frontend Assets</h3>
+      <ol>
+        <li>Cập nhật file <a
+            href="file:///Users/caolegiaphu/Documents/cmc/reddit-project/reddit-fe/assets/common.js">reddit-fe/assets/common.js</a>
+          với CDN cdnjs mới để giải quyết cảnh báo map file.</li>
+        <li>Copy toàn bộ file trong thư mục <code>reddit-fe/</code> ở local đè vào thư mục tĩnh trên Frontend EC2:
+          <pre><code>/var/www/reddit/</code></pre>
+        </li>
+        <li>Xóa cache trình duyệt (nhấn <code>Ctrl + F5</code> hoặc <code>Cmd + Shift + R</code>) để trình duyệt nhận
+          diện file JavaScript mới. Mở F12 kiểm tra log thành công:
+          <code style="color: var(--accent-green);">Connected to Socket.io notification server</code>
+        </li>
+      </ol>
+    </section>
+
+    <!-- SECTION 9 -->
+    <section id="troubleshooting">
+      <h2>9. Các lỗi thường gặp khi thiết lập Proxy & Cách xử lý (Troubleshooting)</h2>
+      <p>Trong quá trình thiết lập và triển khai hạ tầng mạng cho WebSockets/Socket.io, sau đây là các lỗi thực tế dễ
+        gặp và giải pháp:</p>
+
+      <div class="callout callout-warning">
+        <h5>⚠️ Lỗi 1: Lỗi 404 Not Found khi kết nối tới đường dẫn /socket.io/</h5>
+        <p><strong>Triệu chứng:</strong> Trình duyệt báo lỗi đỏ <code>404 Not Found</code> khi cố tải hoặc kết nối tới
+          địa chỉ <code>/socket.io/</code>, Socket.io client liên tục báo lỗi và không thể nâng cấp kết nối.</p>
+        <p><strong>Nguyên nhân 1 (Trùng cấu hình mặc định):</strong> Hệ điều hành Ubuntu tự động tạo file cấu hình mặc
+          định tại <code>/etc/nginx/sites-enabled/default</code> cũng lắng nghe cổng 80 và ghi đè cấu hình
+          <code>nginx-reddit.conf</code> của bạn.
+        </p>
+        <p><strong>Cách xử lý:</strong> Xóa file default và reload lại Nginx:</p>
+        <pre><code>sudo rm /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl reload nginx</code></pre>
+        <p><strong>Nguyên nhân 2 (Chưa đồng bộ file Nginx trên EC2):</strong> Bạn mới chỉ sửa file cấu hình ở thư mục dự
+          án cục bộ (hoặc thư mục Git) nhưng chưa đồng bộ/copy nội dung đè vào file chạy thực tế của Nginx trên máy chủ
+          EC2.</p>
+        <p><strong>Cách xử lý:</strong> Thực hiện copy đè file cấu hình và kiểm tra xem block <code>/socket.io/</code>
+          đã được Nginx nhận diện trong bộ nhớ chưa:</p>
+        <pre><code>sudo cp /var/www/reddit-clone-cmc-cloud-1/reddit-fe/nginx-reddit.conf /etc/nginx/sites-available/reddit
+# Kiểm tra xem cấu hình trong RAM Nginx đã có block socket.io chưa:
+nginx -T | grep -A 20 "location /socket.io/"</code></pre>
+      </div>
+
+      <div class="callout callout-warning">
+        <h5>⚠️ Lỗi 2: Lỗi 504 Gateway Time-out khi kết nối cổng 3000</h5>
+        <p><strong>Triệu chứng:</strong> Trình duyệt báo lỗi <code>504 Gateway Time-out</code> khi Nginx chuyển tiếp yêu
+          cầu đến <code>http://192.168.6.126:3000</code>.</p>
+        <p><strong>Nguyên nhân:</strong> Cổng <code>3000</code> trên máy chủ Backend đang bị tường lửa chặn (như
+          Security Groups của AWS/CMC Cloud hoặc tường lửa <code>ufw</code> trên Ubuntu của Backend), khiến Nginx ở
+          Frontend không thể kết nối tới.</p>
+        <p><strong>Cách xử lý:</strong> Có hai hướng khắc phục:</p>
+        <ul>
+          <li><strong>Hướng A (Mở cổng 3000):</strong> Cấu hình Inbound Rules trong Security Group của máy chủ Backend,
+            cho phép cổng TCP <code>3000</code> nhận dữ liệu từ IP của máy chủ Frontend.</li>
+          <li><strong>Hướng B (Đi qua cổng 80 nội bộ):</strong> Thay vì mở cổng 3000 ra ngoài mạng, chuyển hướng proxy
+            qua cổng 80 của Backend (do cổng 80 đã được cấu hình mở sẵn và tự động NAT vào docker/tiến trình Node thông
+            qua cấu hình Nginx cục bộ tại Backend máy chủ).</li>
+        </ul>
+      </div>
+
+      <div class="callout callout-warning">
+        <h5>⚠️ Lỗi 3: Cảnh báo Access Control (CORS) đối với file source-map .js.map</h5>
+        <p><strong>Triệu chứng:</strong> Trình duyệt hiển thị cảnh báo màu vàng:
+          <code>Cannot load https://cdn.socket.io/4.7.5/socket.io.min.js.map due to access control checks</code> khi
+          truy cập qua tên miền HTTPS đứng sau Cloudflare.
+        </p>
+        <p><strong>Nguyên nhân:</strong> DevTools của trình duyệt cố gắng tải file bản đồ code gỡ lỗi (.js.map) từ CDN
+          khác origin nhưng bị chính sách CORS của CDN đó chặn lại.</p>
+        <p><strong>Cách xử lý:</strong> Chuyển đường dẫn tải script trong file <code>common.js</code> sang hệ thống thư
+          viện CDN của chính Cloudflare (cdnjs). Do cdnjs hỗ trợ CORS tốt cho các file map, cảnh báo sẽ biến mất hoàn
+          toàn:</p>
+        <pre><code>script.src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js";</code></pre>
+      </div>
+
+      <div class="callout callout-warning">
+        <h5>⚠️ Lỗi 4: Lỗi 400 Bad Request (Session ID unknown) hoặc xhr post error khi chạy cụm đa Backend qua Load Balancer</h5>
+        <p><strong>Triệu chứng:</strong> Socket.io liên tục ngắt kết nối và tự động kết nối lại, bảng điều khiển Console báo các lỗi liên tiếp dạng <code>xhr poll error</code>, <code>xhr post error</code>, hoặc <code>400 Bad Request</code>.</p>
+        <p><strong>Nguyên nhân:</strong> Theo mặc định, Socket.io client thiết lập bắt tay bằng HTTP Long Polling trước rồi nâng cấp lên WebSockets. Tuy nhiên, trong cụm đa máy chủ (Multi-Backend EC2) đứng sau Cân bằng tải (Private ALB) mà không kích hoạt chế độ **Sticky Sessions** (Session Affinity), các request HTTP tuần tự từ cùng một client sẽ bị Load Balancer phân tán sang các Backend khác nhau. Khi Backend khác nhận được Session ID (`sid`) không thuộc về bộ nhớ của nó, nó sẽ từ chối và trả về lỗi 400.</p>
+        <p><strong>Cách xử lý:</strong> Cấu hình trực tiếp Socket.io client trong file <code>common.js</code> bỏ qua cơ chế HTTP Polling và **bắt buộc chạy duy nhất giao thức WebSockets** từ đầu. Vì WebSockets là kết nối TCP bền vững liên tục, nó sẽ giữ chặt kết nối với một Backend cố định và không bị Load Balancer định tuyến lại giữa chừng:</p>
+        <pre><code>socket = io(location.origin, {
+    auth: { token },
+    transports: ["websocket"] // Bắt buộc kết nối WebSockets trực tiếp
+});</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Smooth scrolling for sidebar links and active state update
+    document.querySelectorAll('.toc-item a').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelectorAll('.toc-item').forEach(item => item.classList.remove('active'));
+        this.parentElement.classList.add('active');
+
+        const targetId = this.getAttribute('href');
+        document.querySelector(targetId).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Simple scrollspy to highlight active section on scroll
+    window.addEventListener('scroll', () => {
+      let fromTop = window.scrollY + 100;
+
+      document.querySelectorAll('section').forEach(section => {
+        let id = section.getAttribute('id');
+        let item = document.querySelector(`.toc-item a[href="#${id}"]`)?.parentElement;
+
+        if (
+          section.offsetTop <= fromTop &&
+          section.offsetTop + section.offsetHeight > fromTop
+        ) {
+          document.querySelectorAll('.toc-item').forEach(li => li.classList.remove('active'));
+          item?.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
