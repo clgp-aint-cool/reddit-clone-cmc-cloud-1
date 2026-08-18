@@ -1,5 +1,6 @@
 const socketIo = require('socket.io');
 const jwt = require('jsonwebtoken');
+const { publishEvent, subscribeToChannel } = require('./redis');
 
 let io = null;
 
@@ -39,22 +40,27 @@ function initSocket(server) {
     });
   });
 
+  // Subscribe to Redis notifications channel to listen for broadcast events from other instances
+  subscribeToChannel('notifications', (data) => {
+    if (io && data && data.userId && data.notification) {
+      const roomName = `user:${data.userId}`;
+      io.to(roomName).emit('notification', data.notification);
+      console.log(`[Redis Subscriber] Forwarded real-time notification to socket room: ${roomName}`);
+    }
+  });
+
   return io;
 }
 
 function sendNotification(userId, notificationPayload) {
-  if (!io) {
-    console.warn('Socket.io is not initialized yet. Skipping real-time notification push.');
-    return;
-  }
-  
-  const roomName = `user:${userId}`;
-  // Emit 'notification' event with the payload to all sockets joined in the room
-  io.to(roomName).emit('notification', notificationPayload);
-  console.log(`Real-time notification emitted to room: ${roomName}`);
+  // Publish the notification to Redis Pub/Sub.
+  // This allows all active Express server nodes to receive the event and emit it to their connected users.
+  publishEvent('notifications', { userId, notification: notificationPayload });
+  console.log(`[Redis Publisher] Published notification event to Redis channel for user ID: ${userId}`);
 }
 
 module.exports = {
   initSocket,
   sendNotification
 };
+

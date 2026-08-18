@@ -34,6 +34,10 @@ async function runTests() {
     process.exit(1);
   }
 
+  // Connect to Redis for testing
+  const { connectRedis } = require('./redis');
+  await connectRedis();
+
   // Clear existing notifications
   await Notification.deleteMany({});
   console.log('Notifications collection cleared.');
@@ -115,9 +119,35 @@ async function runTests() {
     console.error('Failed: Expected 0, got', count2);
   }
 
-  // Close MongoDB connection
+  // Test Case 5: Verify Redis Caching
+  console.log('\n--- Test Case 5: Verifying Redis Cache Logic ---');
+  const { getCache, delCache } = require('./redis');
+  
+  // Clear any existing cache for user 1
+  await delCache('unread_count:1');
+  
+  // Trigger cache miss and load count (this queries Mongo and sets Redis)
+  const countBefore = await notifService.getUnreadCount(1);
+  console.log('Count before (triggers Mongo query & populates cache):', countBefore);
+  
+  // Fetch value directly from Redis cache to verify it was set
+  const cachedVal = await getCache('unread_count:1');
+  console.log('Direct Redis cache lookup value:', cachedVal);
+  
+  if (cachedVal !== null && Number(cachedVal) === countBefore) {
+    console.log('Success: Redis caching successfully saved value.');
+  } else {
+    console.error('Failed: Redis cache key unread_count:1 was not set properly. Got:', cachedVal);
+  }
+
+  // Close MongoDB and disconnect Redis client
   await mongoose.disconnect();
+  
+  // Gracefully close Redis connections so script exits cleanly
+  const { createClient } = require('redis');
+  // We can just call process.exit(0) to terminate the test script clean
   console.log('\n--- Testing Completed ---');
+  process.exit(0);
 }
 
 runTests().catch(console.error);

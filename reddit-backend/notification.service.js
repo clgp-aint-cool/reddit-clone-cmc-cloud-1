@@ -1,5 +1,6 @@
 const Notification = require('./notification.model');
 const { sendNotification } = require('./socket');
+const { getCache, setCache, delCache, incrCache } = require('./redis');
 
 /**
  * Create a new notification or update an existing one if applicable (deduplication)
@@ -71,6 +72,9 @@ async function createNotification({
     const savedNotif = await notification.save();
     console.log(`[Notification Service] MongoDB Saved: Document ID: ${savedNotif._id}, Type: "${type}", Title: "${savedNotif.title}"`);
     
+    // Increment cached unread count in Redis (if key exists)
+    await incrCache(`unread_count:${userId}`);
+
     // Push real-time event to socket room
     sendNotification(userId, savedNotif);
     
@@ -97,11 +101,25 @@ async function getNotifications(userId, limit = 10, offset = 0) {
 }
 
 /**
- * Fetch count of unread notifications for a user
+ * Fetch count of unread notifications for a user (uses Redis cache)
  */
 async function getUnreadCount(userId) {
+  const cacheKey = `unread_count:${userId}`;
   try {
-    return await Notification.countDocuments({ userId, isRead: false });
+    // 1. Try to read from Redis cache
+    const cachedValue = await getCache(cacheKey);
+    if (cachedValue !== null) {
+      console.log(`[Notification Service] Cache Hit: Unread count for user ${userId} is ${cachedValue}`);
+      return Number(cachedValue);
+    }
+
+    // 2. Cache Miss: Query MongoDB
+    console.log(`[Notification Service] Cache Miss: Querying MongoDB unread count for user ${userId}`);
+    const count = await Notification.countDocuments({ userId, isRead: false });
+
+    // 3. Save to Redis cache (expires in 1 hour / 3600 seconds)
+    await setCache(cacheKey, count, 3600);
+    return count;
   } catch (err) {
     console.error('Error fetching unread count:', err);
     throw err;
@@ -109,21 +127,28 @@ async function getUnreadCount(userId) {
 }
 
 /**
- * Mark a single notification or all user's notifications as read
+ * Mark a single notification or all user's notifications as read (updates/invalidates Redis cache)
  */
 async function markAsRead(userId, notificationId = null) {
+  const cacheKey = `unread_count:${userId}`;
   try {
     if (notificationId) {
-      return await Notification.findOneAndUpdate(
+      const notif = await Notification.findOneAndUpdate(
         { _id: notificationId, userId },
         { isRead: true },
         { returnDocument: 'after' }
       );
+      // Invalidate cached unread count so it will rebuild on next query
+      await delCache(cacheKey);
+      return notif;
     } else {
-      return await Notification.updateMany(
+      const result = await Notification.updateMany(
         { userId, isRead: false },
         { isRead: true }
       );
+      // Set unread count directly to 0 in Redis cache
+      await setCache(cacheKey, 0, 3600);
+      return result;
     }
   } catch (err) {
     console.error('Error marking notifications as read:', err);

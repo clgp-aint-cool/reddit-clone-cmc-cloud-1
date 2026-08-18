@@ -13,8 +13,9 @@ const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 const http = require('http');
 
-// Import MongoDB & real-time notification modules
+// Import MongoDB, Redis & real-time notification modules
 const { connectMongo } = require('./db');
+const { connectRedis } = require('./redis');
 const { initPgTables } = require('./db-pg-init');
 const { initSocket } = require('./socket');
 const notifService = require('./notification.service');
@@ -31,8 +32,9 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD
 });
 
-// Connect to MongoDB and verify PostgreSQL tables on start
+// Connect to Databases and verify PostgreSQL tables on start
 connectMongo();
+connectRedis();
 initPgTables(pool);
 
 function auth(req, res, next) {
