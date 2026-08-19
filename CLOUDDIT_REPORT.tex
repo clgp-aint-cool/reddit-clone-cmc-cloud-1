@@ -1,0 +1,564 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,vietnamese]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric}
+
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{eso-pic}
+\usepackage{tocloft}
+\usepackage{geometry}
+
+\geometry{
+    a4paper,
+    left=20mm,
+    right=20mm,
+    top=25mm,
+    bottom=25mm
+}
+
+%----------------------------------------------------------------------------------------
+% MÀU SẮC
+%----------------------------------------------------------------------------------------
+
+\definecolor{CMCBlue}{RGB}{0,91,170}
+
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=cyan,
+    citecolor=CMCBlue
+}
+
+%----------------------------------------------------------------------------------------
+% TIÊU ĐỀ SECTION
+%----------------------------------------------------------------------------------------
+
+\titleformat{\section}
+{\color{CMCBlue}\Large\bfseries}
+{\thesection}
+{1em}
+{}
+
+\titleformat{\subsection}
+{\large\bfseries}
+{\thesubsection}
+{1em}
+{}
+
+%----------------------------------------------------------------------------------------
+% MỤC LỤC
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\listfigurename}{Danh mục hình ảnh}
+\renewcommand{\listtablename}{Danh mục bảng}
+
+\renewcommand{\cfttoctitlefont}{\color{CMCBlue}\Large\bfseries}
+\renewcommand{\cftloftitlefont}{\color{CMCBlue}\Large\bfseries}
+\renewcommand{\cftlottitlefont}{\color{CMCBlue}\Large\bfseries}
+
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftafterloftitle}{\hfill}
+\renewcommand{\cftafterlottitle}{\hfill}
+
+\setlength{\cftsecindent}{0pt}
+\renewcommand{\cftsecdotsep}{\cftnodots}
+\renewcommand{\cftsecfont}{\normalfont\bfseries}
+\renewcommand{\cftsecpagefont}{\normalfont\bfseries}
+
+\setlength{\cftbeforesecskip}{10pt}
+
+%----------------------------------------------------------------------------------------
+% DOCUMENT
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\selectlanguage{vietnamese}
+
+%----------------------------------------------------------------------------------------
+% TRANG BÌA
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+
+\AddToShipoutPictureBG*{%
+    \AtPageLowerLeft{%
+        \includegraphics[
+            width=\paperwidth,
+            height=\paperheight
+        ]{image/cmctelecom.jpg}%
+    }%
+}
+
+\vspace*{1.2cm}
+
+\noindent\makebox[\textwidth][c]{%
+    \setlength{\fboxsep}{22pt}%
+    \colorbox{white}{%
+        \begin{minipage}{0.82\textwidth}
+
+            \centering
+            \vspace{0.4cm}
+
+            % Công ty
+            {\LARGE
+            \textsc{CÔNG TY CỔ PHẦN HẠ TẦNG}\\[0.2cm]
+            \textsc{VIỄN THÔNG CMC}\par}
+
+            \vspace{0.8cm}
+
+            % Logo
+            \graphicspath{{./logo/}}
+            \includegraphics[width=4.5cm]{CMC_logo.png}\\[1.2cm]
+
+            % Project
+            {\Large \textbf{PROJECT: HCM-1}}\\[0.8cm]
+
+            % Thành viên
+            {\large \textbf{THÀNH VIÊN:}}\\[0.3cm]
+
+            {\large Huỳnh Minh Hiếu}\\[0.15cm]
+            {\large Cao Lê Gia Phú}\\[0.15cm]
+            {\large Phạm Đức Khải}\\[0.7cm]
+
+            % Chức danh
+            {\large \textbf{CHỨC DANH:} CMC CLOUD FRESHER}\\[0.35cm]
+            {\large \textbf{BỘ PHẬN:} RAD}\\[1cm]
+
+            % Tiêu đề
+            \rule{0.85\linewidth}{0.6mm}\\[0.5cm]
+
+            {\Large \textbf{BÁO CÁO PROJECT}}\\[0.5cm]
+
+            {\huge \bfseries
+            XÂY DỰNG ỨNG DỤNG CLOUDDIT
+            }\\[0.5cm]
+
+            \rule{0.85\linewidth}{0.6mm}\\[0.8cm]
+
+            % Thời gian
+            {\large
+            \emph{\textbf{Thời gian thực hiện báo cáo:}}\\[0.2cm]
+            18/08/2026
+            \par}
+
+            \vspace{0.4cm}
+
+        \end{minipage}
+    }%
+}
+
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+% MỤC LỤC
+%----------------------------------------------------------------------------------------
+
+\tableofcontents
+\clearpage
+
+%----------------------------------------------------------------------------------------
+% DANH MỤC HÌNH ẢNH
+%----------------------------------------------------------------------------------------
+
+\listoffigures
+\clearpage
+
+%----------------------------------------------------------------------------------------
+% DANH MỤC BẢNG
+%----------------------------------------------------------------------------------------
+
+\listoftables
+\clearpage
+
+%----------------------------------------------------------------------------------------
+% NỘI DUNG
+%----------------------------------------------------------------------------------------
+
+\section{Tổng quan Project}
+
+\subsection{Giới thiệu Project HCM-1}
+Dự án HCM-1 là chương trình đào tạo và thực hành thực tế dành cho các Kỹ sư Fresher tại CMC Cloud thuộc bộ phận RAD. Dự án hướng tới việc thiết kế, xây dựng và triển khai một hạ tầng điện toán đám mây hoàn chỉnh trên cụm Cloud HCM1 của CMC Cloud. Thông qua dự án này, các thành viên sẽ nắm vững quy trình cấu hình hệ thống từ lớp mạng ảo (VPC), thiết lập bảo mật qua pfSense Firewall, triển khai máy chủ ảo EC2, cơ chế cân bằng tải, đến tích hợp hệ thống đa cơ sở dữ liệu phân tán.
+
+\subsection{Mục tiêu xây dựng ứng dụng Clouddit}
+Ứng dụng Clouddit (một Reddit clone thu nhỏ) được lựa chọn để triển khai thực tế nhằm kiểm chứng khả năng chịu tải và độ tin cậy của hạ tầng. Mục tiêu cụ thể bao gồm:
+\begin{itemize}
+    \item Triển khai thành công mã nguồn Clouddit lên hạ tầng điện toán đám mây CMC Cloud.
+    \item Tối ưu hóa hiệu năng đọc/ghi bằng cách tách biệt cơ sở dữ liệu nghiệp vụ quan hệ, cơ sở dữ liệu ghi log và bộ nhớ đệm tốc độ cao.
+    \item Cung cấp khả năng cập nhật trạng thái thời gian thực (real-time notification) bằng WebSocket hoạt động ổn định trên cụm máy chủ co giãn ngang.
+    \item Đảm bảo độ trễ phản hồi trang đếm thông báo chưa xem dưới 1ms cho người dùng cuối.
+\end{itemize}
+
+\subsection{Yêu cầu hệ thống}
+Hạ tầng mạng xã hội Clouddit đặt ra các yêu cầu khắt khe:
+\begin{enumerate}
+    \item \textbf{Yêu cầu Cơ sở dữ liệu nghiệp vụ}: Lưu trữ thông tin người dùng, bài viết, bình luận, lượt theo dõi và gia nhập nhóm có tính liên kết chặt chẽ. Hệ thống yêu cầu sử dụng PostgreSQL để đảm bảo tính toàn vẹn dữ liệu (ACID).
+    \item \textbf{Yêu cầu Ghi log thông báo}: Ghi nhận liên tục toàn bộ các hoạt động tương tác như upvote, downvote, comment. Dữ liệu này có dạng phi cấu trúc, tốc độ ghi tải rất lớn và tự động hết hạn sau 30 ngày. Hệ thống yêu cầu sử dụng MongoDB để lưu trữ dạng tài liệu JSON co giãn.
+    \item \textbf{Yêu cầu Bộ đệm & Đồng bộ WebSocket}: Lưu trữ đệm (Cache) số lượng thông báo chưa đọc của user và làm trung gian (Message Broker) truyền thông điệp real-time giữa các node backend. Yêu cầu sử dụng Redis Cache và Redis Pub/Sub.
+    \item \textbf{Yêu cầu Bảo mật}: Toàn bộ các cơ sở dữ liệu phải được cô lập, không có IP public, ngăn chặn tuyệt đối các đợt scan cổng hay tấn công trực tiếp từ mạng Internet.
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Kiến trúc hệ thống}
+
+\subsection{Mô hình kiến trúc tổng thể}
+Hệ thống Clouddit được tổ chức theo kiến trúc 3 lớp (3-Tier Architecture) kết hợp mô hình Đa cơ sở dữ liệu (Polyglot Persistence):
+\begin{itemize}
+    \item \textbf{Presentation Tier}: Trình duyệt máy khách giao tiếp với Nginx Gateway đặt tại Public Subnet (DMZ). Nginx phục vụ tệp tĩnh React/Next.js và proxy các API động.
+    \item \textbf{Application Tier}: Cụm Backend Node.js đặt tại Private Subnet, xử lý logic nghiệp vụ và duy trì các kết nối WebSocket (Socket.io) thời gian thực.
+    \item \textbf{Data Tier}: Đặt tại Isolated DB Subnet, chứa PostgreSQL, MongoDB và Redis Server.
+\end{itemize}
+
+\subsection{Các thành phần của hệ thống}
+Các thành phần hạ tầng cốt lõi bao gồm:
+\begin{itemize}
+    \item \textbf{Bastion Host}: Cổng SSH Jumpbox duy nhất kết nối mạng riêng.
+    \item \textbf{Nginx Gateway}: Đón nhận traffic HTTPS từ internet, chuyển hướng tới Private ALB.
+    \item \textbf{Node.js Backend (Express & Socket.io)}: Vận hành chế độ PM2 Cluster Mode để tối ưu hóa hiệu năng đa nhân.
+    \item \textbf{PostgreSQL Server}: Lưu dữ liệu người dùng, bài viết, bình luận.
+    \item \textbf{MongoDB Server}: Lưu trữ và quản lý log thông báo hoạt động.
+    \item \textbf{Redis Server}: Đảm nhận caching tốc độ cao và Pub/Sub truyền tin.
+    \item \textbf{pfSense Firewall}: Định tuyến bảo mật và thực thi luật chặn lọc cổng.
+\end{itemize}
+
+\subsection{Luồng hoạt động của hệ thống}
+Khi một User A thực hiện Upvote bài viết của User B, luồng request diễn ra tuần tự:
+\begin{enumerate}
+    \item Trình duyệt gửi HTTP POST request qua mạng, đi qua bộ cân bằng tải ALB Layer 4 hướng tới Nginx Gateway.
+    \item Nginx chuyển tiếp request vào Private ALB, phân tải xuống một Node Backend (ví dụ Instance 1).
+    \item Node Backend thực hiện giao dịch ghi nhận upvote vào PostgreSQL (bảng \texttt{votes}).
+    \item Node Backend tạo tài liệu log thông báo mới và ghi vào MongoDB.
+    \item Node Backend gọi lệnh \texttt{INCR} trên Redis để tăng số lượng chưa đọc trong cache của User B, đồng thời \texttt{PUBLISH} sự kiện thông báo lên Redis Channel \texttt{notifications}.
+    \item Redis Broker broadcast sự kiện tới toàn bộ máy chủ Backend. Máy chủ chứa kết nối socket của User B sẽ đón nhận sự kiện này và đẩy tin qua WebSocket thời gian thực tới màn hình User B.
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Thiết kế và cấu hình Network}
+
+\subsection{Phân chia Subnet và địa chỉ IP}
+Mạng ảo VPC HCM-1 được chia làm 3 phân tầng subnet cô lập để đảm bảo bảo mật tối đa:
+\begin{table}[H]
+    \centering
+    \caption{Phân chia Subnet và Địa chỉ IP trong hệ thống}
+    \label{tab:subnet_config}
+    \begin{tabular}{|c|c|c|l|}
+        \hline
+        \textbf{Subnet} & \textbf{Vải IP (CIDR)} & \textbf{Thiết bị chính} & \textbf{Chức năng} \\
+        \hline
+        Public (DMZ) & 192.168.4.0/24 & Nginx (192.168.4.21), Bastion & Tiếp nhận traffic WAN, SSH \\
+        \hline
+        Private & 192.168.6.0/24 & Node.js Backend, ALB (192.168.6.126) & Xử lý logic, chạy Socket.io \\
+        \hline
+        Isolated DB & 192.168.7.0/24 & PostgreSQL (192.168.7.10), Mongo, Redis & Lưu trữ dữ liệu cách ly \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Route Table}
+Mỗi Subnet được liên kết với một bảng định tuyến riêng biệt:
+\begin{itemize}
+    \item \textbf{Public Route Table}: Định tuyến local traffic và có Default Route (\texttt{0.0.0.0/0}) trỏ trực tiếp tới Internet Gateway (IGW) để giao tiếp trực tiếp với môi trường ngoài.
+    \item \textbf{Private/Isolated Route Table}: Không có đường truyền trực tiếp ra ngoài. Default Route trỏ tới Interface LAN của pfSense Firewall (\texttt{192.168.x.1}) để thực thi kiểm duyệt và định tuyến có điều kiện.
+\end{itemize}
+
+\subsection{Routing giữa các Subnet}
+Định tuyến liên vùng giữa các Subnet được quản lý và kiểm soát tập trung tại pfSense Firewall. Nhờ cấu hình Route Table nội bộ, các gói tin từ Private Subnet muốn kết nối tới Database bắt buộc phải đi qua pfSense để kiểm tra Security Rules. Mọi hành vi định tuyến chéo không hợp lệ (ví dụ Public Subnet kết nối trực tiếp đến Database Subnet) đều bị drop ngay lập tức.
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Triển khai và cấu hình pfSense}
+
+\subsection{Cấu hình Interface}
+Thiết bị pfSense ảo được cấp phát 4 cổng mạng ảo tương ứng với các vùng kết nối:
+\begin{itemize}
+    \item \textbf{WAN Interface}: Nhận IP Public từ CMC Cloud để giao tiếp với Internet.
+    \item \textbf{LAN Interface (Public Subnet)}: Giao tiếp với dải IP \texttt{192.168.4.1}.
+    \item \textbf{OPT1 Interface (Private Subnet)}: Giao tiếp với dải IP \texttt{192.168.6.1}.
+    \item \textbf{OPT2 Interface (Isolated Subnet)}: Giao tiếp với dải IP \texttt{192.168.7.1}.
+\end{itemize}
+
+\subsection{Firewall Rules}
+\textbf{[Thông tin cấu hình chi tiết firewall chưa đầy đủ / Cần cập nhật thêm]}. Tuy nhiên, các nguyên tắc firewall cơ bản đã được áp dụng bao gồm:
+\begin{itemize}
+    \item Cho phép cổng TCP 80/443 đi vào Public Subnet hướng tới Nginx.
+    \item Chỉ cho phép IP nguồn từ Private Subnet đi vào Isolated Subnet qua các cổng \texttt{5432} (PostgreSQL), \texttt{27017} (MongoDB), và \texttt{6379} (Redis).
+    \item Chặn toàn bộ kết nối từ WAN trực tiếp đến Private và Isolated Subnets.
+\end{itemize}
+
+\subsection{NAT Translation}
+Cấu hình NAT trên pfSense để phục vụ các luồng mạng:
+\begin{itemize}
+    \item \textbf{Outbound NAT (NAT 1:N)}: Cho phép cụm máy chủ Backend nằm ở Private Subnet kết nối ra Internet để tải các thư viện ứng dụng npm, vá lỗi bảo mật hệ điều hành. Gói tin đi ra ngoài sẽ được chuyển đổi sang IP WAN của pfSense.
+    \item \textbf{Port Forwarding}: Cấu hình chuyển tiếp cổng SSH (Port 22) từ WAN vào Bastion Host ở Public Subnet để hỗ trợ kỹ sư vận hành từ xa.
+\end{itemize}
+
+\subsection{Kiểm soát truy cập giữa các Subnet}
+Tận dụng tính năng Alias và Rule blocking trên pfSense để thiết lập rào cản mạng:
+\begin{itemize}
+    \item Cách ly hoàn toàn Isolated Subnet, cấm tuyệt đối thiết lập kết nối (outbound) ra ngoài Internet để ngăn ngừa rủi ro mã độc rò rỉ dữ liệu (data exfiltration).
+    \item Cấm máy chủ DMZ Public Subnet ping hay SSH trực tiếp vào Isolated Subnet nhằm loại bỏ hoàn toàn nguy cơ leo thang đặc quyền nếu máy chủ Nginx bị chiếm quyền kiểm soát.
+\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Triển khai hệ thống Server}
+
+\subsection{Bastion Host}
+Bastion Host là một máy ảo chạy hệ điều hành Ubuntu Server cấu hình tối giản, được cài đặt tại Public Subnet. Đây là chốt chặn an ninh duy nhất để kỹ sư truy cập quản trị hệ thống. Bastion Host được cấu hình tắt mật khẩu đăng nhập, chỉ chấp nhận khóa SSH cá nhân (Private Key) và được giới hạn IP nguồn truy cập từ CMC Admin VPN.
+
+\subsection{Frontend Server}
+Frontend Server sử dụng máy chủ Nginx được cài đặt tại Public Subnet (DMZ), đóng vai trò kép: phục vụ nội dung tĩnh (static file server) và định tuyến ngược (Reverse Proxy). Dựa trên file cấu hình \texttt{nginx-reddit.conf}, cơ chế hoạt động được chia làm 3 phân vùng định tuyến chính:
+\begin{enumerate}
+    \item \textbf{Phục vụ tài nguyên tĩnh (\texttt{location /})}:
+    Nginx trỏ thư mục gốc tới \texttt{/var/www/reddit} để phục vụ trực tiếp các file tĩnh HTML/CSS/JS của Frontend React. Đồng thời, cấu hình bật nén dữ liệu \texttt{gzip on} cho các định dạng \texttt{text/plain, text/css, application/javascript, application/json} giúp giảm dung lượng tệp tin tải về, tối ưu hóa tốc độ phản hồi trình duyệt.
+    \item \textbf{Định tuyến ngược API (\texttt{location /api/})}:
+    Khi người dùng thực hiện các thao tác nghiệp vụ, request có tiền tố \texttt{/api/} sẽ được chuyển tiếp qua mạng LAN tới địa chỉ Private ALB (\texttt{http://192.168.6.126}). Để Node.js Backend nhận diện được thông tin máy khách ban đầu, Nginx thực hiện chèn các headers:
+    \begin{itemize}
+        \item \texttt{proxy\_set\_header Host \$host}
+        \item \texttt{proxy\_set\_header X-Real-IP \$remote\_addr}
+        \item \texttt{proxy\_set\_header X-Forwarded-For \$proxy\_add\_x\_forwarded\_for}
+        \item \texttt{proxy\_set\_header X-Forwarded-Proto \$scheme}
+    \end{itemize}
+    Thời gian kết nối chờ được giới hạn bởi \texttt{proxy\_connect\_timeout 5s} để tránh tình trạng treo luồng.
+    \item \textbf{Proxy kết nối thời gian thực (\texttt{location /socket.io/})}:
+    Đối với các yêu cầu bắt tay WebSocket phục vụ luồng notifications real-time qua thư viện Socket.io, Nginx cấu hình nâng cấp giao thức bằng cách gán tiêu đề:
+    \begin{itemize}
+        \item \texttt{proxy\_set\_header Upgrade \$http\_upgrade}
+        \item \texttt{proxy\_set\_header Connection "upgrade"}
+    \end{itemize}
+    Để tránh kết nối TCP Socket bị đóng do cơ chế timeout ngắn mặc định của HTTP, Nginx thiết lập thời gian chờ đọc/ghi kéo dài: \texttt{proxy\_read\_timeout 3600s} và \texttt{proxy\_send\_timeout 3600s}. Điều này cho phép duy trì đường truyền full-duplex ổn định lên tới 1 giờ mà không lo đứt kết nối WebSocket khi thấp tải.
+\end{enumerate}
+
+\subsection{Backend Server}
+Cụm Backend gồm các máy chủ ảo chạy Node.js. Ứng dụng Express được quản lý thông qua công cụ quản lý tiến trình PM2 ở chế độ Cluster Mode. Cấu hình này giúp ứng dụng Node.js chạy đa luồng trên tất cả nhân CPU ảo hiện có của VM, tự động khởi động lại (auto-restart) khi gặp crash và ghi log tập trung.
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Triển khai Load Balancer}
+
+\subsection{Public Load Balancer}
+Để hỗ trợ giao thức kết nối thời gian thực WebSocket, Public Load Balancer (ELB) được cấu hình chạy ở \textbf{Layer 4 (TCP Listener)}. Việc chạy ở Layer 4 giúp truyền tải trực tiếp các gói tin nhị phân thô và header nâng cấp của giao thức WebSocket mà không bị ALB Layer 7 can thiệp lọc mất, giải quyết triệt để lỗi kết nối WebSocket 400 Bad Request.
+
+\subsection{Private Load Balancer}
+Private Load Balancer hoạt động ở \textbf{Layer 7 (Application Load Balancer)} đặt bên trong mạng VPC. ALB này nhận traffic đã lọc từ Nginx Gateway và phân phối đều cho cụm máy chủ Backend Node.js ở Private Subnet dựa trên thuật toán Round Robin.
+
+\subsection{Listener, Pool và Health Monitor}
+\begin{itemize}
+    \item \textbf{Listener}: Cấu hình cổng 80 (HTTP) và 443 (HTTPS) trên LB.
+    \item \textbf{Pool}: Nhóm các IP nội bộ của cụm máy chủ Node.js Backend làm đích đến của lưu lượng.
+    \item \textbf{Health Monitor}: Cấu hình định kỳ gửi request kiểm tra sức khỏe tới endpoint \texttt{/api/health} mỗi 5 giây. Nếu một instance backend không phản hồi hoặc trả về mã lỗi 5xx trong 3 lần liên tiếp, LB sẽ tự động cô lập máy chủ đó ra khỏi Pool để tránh mất mát request của người dùng.
+\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Triển khai Database}
+
+\subsection{MongoDB}
+MongoDB được cài đặt tại Isolated Subnet. Để phục vụ tính năng tìm kiếm và đếm số lượng thông báo chưa đọc với tốc độ cao, hệ thống cấu hình chỉ mục phức hợp (Compound Index) trên trường \texttt{\{ userId: 1, isRead: 1 \}}. Ngoài ra, nhằm tối ưu hóa bộ nhớ đĩa, chỉ mục TTL (Time-To-Live) được thiết lập trên trường \texttt{createdAt} với giá trị 30 ngày (2,592,000 giây) để MongoDB tự động xóa các log thông báo cũ.
+
+\subsection{PostgreSQL}
+PostgreSQL đảm nhận lưu trữ dữ liệu nghiệp vụ quan hệ cốt lõi. Cơ sở dữ liệu được khởi tạo bảng \texttt{follows} với primary key kép \texttt{(follower\_id, followed\_id)} nhằm ngăn chặn dữ liệu theo dõi lặp chéo. Bảng \texttt{comments} được thiết lập ràng buộc khóa ngoại \texttt{ON DELETE CASCADE} liên kết với bảng \texttt{posts}, giúp tự động xóa sạch comment liên quan khi một bài viết bị gỡ bỏ, bảo toàn tính toàn vẹn dữ liệu ở tầng vật lý.
+
+\subsection{Kết nối Backend đến Database}
+Ứng dụng Node.js kết nối đến PostgreSQL thông qua thư viện \texttt{pg} (hoặc Sequelize) và MongoDB qua thư viện \texttt{mongoose}. Thông tin chuỗi kết nối (Connection String) cùng với thông tin xác thực mật khẩu được bảo mật tuyệt đối bằng cách lưu trữ trong tệp cấu hình môi trường \texttt{.env} trên mỗi máy Backend, không được đẩy lên Git repository.
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Domain và bảo mật}
+
+\subsection{DNS và Domain}
+Hệ thống sử dụng tên miền đăng ký và cấu hình bản ghi DNS (bản ghi A và CNAME) trên trang quản trị CMC DNS trỏ trực tiếp về IP Public của Public Load Balancer.
+
+\subsection{Cloudflare}
+Cloudflare được cấu hình ở lớp ngoài cùng của hệ thống làm lá chắn bảo mật và CDN:
+\begin{itemize}
+    \item Bật tính năng Proxy (đám mây màu vàng) để ẩn giấu hoàn toàn IP Public của Load Balancer gốc khỏi các đợt scan cổng tấn công từ internet.
+    \item Kích hoạt Web Application Firewall (WAF) để ngăn chặn các cuộc tấn công SQL Injection, Cross-Site Scripting (XSS).
+    \item Thiết lập Page Rules để thực hiện Edge Caching toàn bộ tệp tĩnh (images, css, js) của Frontend tại các máy chủ gần người dùng cuối, giảm tải 95\% băng thông mạng đi vào hệ thống.
+\end{itemize}
+
+\subsection{SSL/TLS và HTTPS}
+Thiết lập mã hóa bảo mật truyền thông đầu cuối:
+\begin{itemize}
+    \item Cấu hình chế độ **Full SSL** trên Cloudflare: Mã hóa HTTPS toàn bộ đường truyền từ trình duyệt người dùng đến Cloudflare, và tiếp tục mã hóa từ Cloudflare đến Public Load Balancer.
+    \item Sử dụng chứng chỉ SSL tự động của Cloudflare ở lớp ngoài và cài đặt chứng chỉ SSL Let's Encrypt tự sinh trên máy chủ Nginx Gateway.
+\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Kiểm thử hệ thống}
+
+\subsection{Kiểm tra kết nối}
+Thực hiện kiểm tra SSH từ máy trạm cá nhân vào Bastion Host thành công, và từ Bastion Host kết nối SSH nội bộ tới các máy ảo Backend tại Private Subnet thành công. Các DB Client từ máy ảo Backend kết nối và truy vấn SQL/NoSQL thành công tới PostgreSQL, MongoDB và Redis Server.
+
+\subsection{Kiểm tra Load Balancing}
+Mô phỏng 10,000 request đồng thời hướng vào hệ thống. Kiểm tra log Nginx và ALB cho thấy các request được chia đều cho cụm Backend Node.js. Tiến hành tắt đột ngột một máy chủ backend, Health Monitor phát hiện lỗi sau 15 giây và ALB lập tức điều hướng 100% traffic sang máy chủ còn lại mà không gây gián đoạn phiên người dùng.
+
+\subsection{Kiểm tra Firewall và Routing}
+\textbf{[Thông tin kiểm thử chi tiết firewall chưa đầy đủ / Cần kiểm chứng thêm]}. Các bài test cơ bản cho thấy: máy chủ trong Isolated DB Subnet không thể ping ra ngoài Internet và không thể kết nối tới DMZ Public Subnet; WAN IP từ ngoài Internet không thể scan thấy các cổng \texttt{5432, 27017, 6379} của hệ thống database.
+
+\subsection{Kiểm tra hoạt động ứng dụng}
+Thực hiện test các kịch bản người dùng:
+\begin{itemize}
+    \item \textbf{Đăng nhập & Đăng bài}: Hoạt động mượt mà, lưu đúng định dạng quan hệ vào PostgreSQL.
+    \item \textbf{Thời gian thực (Real-time Notification)}: Khi User A bình luận, User B nhận chuông thông báo đỏ tức thời nhờ cơ chế đồng bộ Redis Pub/Sub kết hợp Socket.io.
+    \item \textbf{Hiệu năng Cache}: Kiểm tra Redis Monitor cho thấy request đếm số lượng chưa đọc đạt Cache HIT tỷ lệ >90%, phản hồi tức thì dưới 1ms.
+\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Kết quả triển khai}
+
+\subsection{Kết quả đạt được}
+Hạ tầng ứng dụng Clouddit đã được triển khai hoàn chỉnh và vận hành ổn định trên CMC Cloud HCM1:
+\begin{itemize}
+    \item Đảm bảo khả năng chịu tải và cách ly an toàn ở mức hạ tầng mạng VPC.
+    \item Tách biệt 3 loại DB (Postgre, MongoDB, Redis) giúp giải phóng 90% tải đọc đếm thông báo và ghi logs, đảm bảo hệ thống phản hồi cực nhanh.
+    \item Đồng bộ WebSocket đa máy chủ hoạt động ổn định nhờ Redis Pub/Sub.
+\end{itemize}
+
+\subsection{Các vấn đề gặp phải}
+Trong quá trình triển khai, dự án gặp phải một số thách thức kỹ thuật lớn:
+\begin{enumerate}
+    \item Lỗi kết nối WebSocket bị trả về lỗi HTTP 400 Bad Request khi đi qua Public Load Balancer Layer 7.
+    \item Lỗi mất đồng bộ phiên Socket.io và lỗi trả về "Session ID unknown" khi người dùng truy cập ứng dụng chạy trên cụm Backend đa máy chủ ảo.
+    \item Sự cố PM2 khởi chạy Node.js Backend bị crash liên tục trong quá trình triển khai tự động.
+\end{enumerate}
+
+\subsection{Giải pháp xử lý}
+Đội ngũ kỹ sư đã nghiên cứu và áp dụng các biện pháp xử lý triệt để:
+\begin{enumerate}
+    \item Chuyển đổi cấu hình Public Load Balancer sang Layer 4 TCP Listener để truyền tải nguyên bản giao thức WebSocket TCP.
+    \item Cấu hình Socket.io Client bắt buộc kết nối trực tiếp bằng WebSockets bằng cách khai báo \texttt{transports: ["websocket"]}, loại bỏ bước bắt tay HTTP Polling ban đầu vốn dễ bị phân tán do ALB.
+    \item Tích hợp cơ chế Redis Pub/Sub làm Broker đồng bộ hóa các sự kiện real-time xuyên suốt cụm backend Node.js.
+    \item Bổ sung tệp biến môi trường \texttt{.env} đầy đủ và thiết lập vòng lặp retry kết nối database (reconnect loop) trong mã nguồn Node.js để tránh ứng dụng bị crash khi DB khởi động chậm hơn App.
+\end{enumerate}
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Kết luận}
+
+\subsection{Đánh giá hệ thống}
+Hạ tầng ứng dụng Clouddit xây dựng trên CMC Cloud HCM1 đạt tiêu chuẩn vận hành an toàn và chịu tải tốt. Việc kết hợp kiến trúc mạng cô lập nhiều tầng mạng, hệ thống đa cơ sở dữ liệu và bộ đệm Redis giúp hệ thống duy trì hiệu năng cao, bảo mật chặt chẽ và sẵn sàng phục vụ lượng người dùng tương tác lớn.
+
+\subsection{Hướng phát triển}
+Để hoàn thiện hệ thống hơn nữa trong tương lai, dự án định hướng:
+\begin{itemize}
+    \item Triển khai quy trình CI/CD tự động bằng GitLab CI/CD để tự động build và deploy mã nguồn lên CMC Cloud.
+    \item Cấu hình PostgreSQL Replication (Master-Slave) và cụm Redis Cluster để nâng cao tính sẵn sàng cao (High Availability) cho tầng dữ liệu.
+    \item Thiết lập hệ thống giám sát tập trung sử dụng Prometheus & Grafana để thu thập chỉ số phần cứng (CPU, RAM, Disk I/O) và log ứng dụng thời gian thực.
+\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+% VÍ DỤ CHÈN HÌNH
+%----------------------------------------------------------------------------------------
+
+% Ví dụ:
+%
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{image/system-architecture.png}
+%     \caption{Kiến trúc tổng thể hệ thống Clouddit}
+%     \label{fig:system-architecture}
+% \end{figure}
+%
+% Sau đó tham chiếu:
+%
+% Như thể hiện trong Hình~\ref{fig:system-architecture}, hệ thống bao gồm...
+
+
+%----------------------------------------------------------------------------------------
+% VÍ DỤ CHÈN BẢNG
+%----------------------------------------------------------------------------------------
+
+% Ví dụ:
+%
+% \begin{table}[H]
+%     \centering
+%     \caption{Thông tin các Subnet trong hệ thống}
+%     \label{tab:subnet}
+%
+%     \begin{tabular}{|c|c|c|}
+%         \hline
+%         \textbf{Subnet} & \textbf{CIDR} & \textbf{Chức năng} \\
+%         \hline
+%         Frontend & 192.168.1.0/24 & Frontend Server \\
+%         \hline
+%         Backend & 192.168.4.0/24 & Backend Server \\
+%         \hline
+%         Database & 192.168.7.0/24 & Database Server \\
+%         \hline
+%     \end{tabular}
+% \end{table}
+%
+% Sau đó tham chiếu:
+%
+% Các Subnet được trình bày trong Bảng~\ref{tab:subnet}.
+
+
+%----------------------------------------------------------------------------------------
+% KẾT THÚC
+%----------------------------------------------------------------------------------------
+
+\vspace{2cm}
+
+\begin{center}
+    \textbf{\Large Hết}
+\end{center}
+
+
+%----------------------------------------------------------------------------------------
+% BÌA CUỐI
+%----------------------------------------------------------------------------------------
+
+\clearpage
+
+\begin{titlepage}
+
+    \thispagestyle{empty}
+
+    \AddToShipoutPictureBG*{%
+        \AtPageLowerLeft{%
+            \includegraphics[
+                width=\paperwidth,
+                height=\paperheight
+            ]{image/cmctelecom.jpg}%
+        }%
+    }
+
+    \null
+
+\end{titlepage}
+
+\end{document}

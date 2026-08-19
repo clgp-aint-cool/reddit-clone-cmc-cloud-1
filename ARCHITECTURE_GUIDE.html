@@ -10,6 +10,12 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    });
+  </script>
   <style>
     :root {
       --bg-color: #0f172a;
@@ -417,8 +423,13 @@
    ├──> MongoDB (192.168.7.155:27017)
    └──> Redis Broker (192.168.7.117:6379)
         </pre>
-      </div>
-    </section>
+    
+    <div style="margin-top:24px;margin-bottom:12px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
+      <h4 style="margin-bottom:12px;font-weight:500;color:var(--text-main);">Hình ảnh Sơ đồ Kiến trúc CMC Cloud thực tế (Topology):</h4>
+      <img src="./slide/cmc-cloud-architecture.png" alt="CMC Cloud Architecture Topology" style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+    </div>
+  </div>
+</section>
 
     <!-- SECTION 2 -->
     <section id="subnets">
@@ -678,6 +689,112 @@ sudo systemctl reload nginx</code></pre>
           để đẩy tin nhắn thời gian thực trực tiếp về trình duyệt người dùng qua kênh WebSocket.
         </li>
       </ol>
+
+      <h3 style="margin-top: 24px;">Sơ đồ Luồng đi dữ liệu & Đồng bộ Pub/Sub:</h3>
+      <div class="mermaid"
+        style="margin-top: 16px; margin-bottom: 24px; background: #0b0f19; border-radius: 12px; padding: 16px; border: 1px solid var(--border-color);">
+        graph TD
+        classDef client fill:#3b82f6,stroke:#1d4ed8,color:#fff,stroke-width:2px;
+        classDef proxy fill:#10b981,stroke:#047857,color:#fff,stroke-width:2px;
+        classDef backend fill:#f59e0b,stroke:#b45309,color:#fff,stroke-width:2px;
+        classDef db fill:#8b5cf6,stroke:#6d28d9,color:#fff,stroke-width:2px;
+        classDef redis fill:#ef4444,stroke:#b91c1c,color:#fff,stroke-width:2px;
+
+        subgraph Client_Zone ["Vùng Người dùng (Browsers)"]
+        BrowserA["Trình duyệt User A &lt;br&gt; (Gửi tương tác)"]:::client
+        BrowserB["Trình duyệt User B &lt;br&gt; (Nhận notification)"]:::client
+        end
+
+        subgraph Proxy_Zone ["Vùng Phân phối (Proxy &amp; Load Balancer)"]
+        CF["Cloudflare &lt;br&gt; (SSL Termination)"]:::proxy
+        PublicELB["Public ELB &lt;br&gt; (TCP Cổng 80 - Layer 4)"]:::proxy
+        NginxFE["Nginx Frontend EC2 &lt;br&gt; (192.168.4.21)"]:::proxy
+        PrivateALB["Private ALB &lt;br&gt; (192.168.6.126)"]:::proxy
+        end
+
+        subgraph Backend_Zone ["Vùng Ứng dụng (Private Subnet)"]
+        Node1["Backend EC2-1 (192.168.6.229) &lt;br&gt; [Node.js + Socket.io]"]:::backend
+        Node2["Backend EC2-2 (192.168.6.76) &lt;br&gt; [Node.js + Socket.io]"]:::backend
+        end
+
+        subgraph DB_Zone ["Vùng Dữ liệu Cô lập (Isolated Subnet)"]
+        Postgres["PostgreSQL (192.168.7.251:5432) &lt;br&gt; [Source of Truth: Comments/Follows]"]:::db
+        Mongo["MongoDB (192.168.7.155:27017) &lt;br&gt; [Notifications Store]"]:::db
+        Redis["Redis Server (192.168.7.117:6379) &lt;br&gt; [Cache &amp; Pub/Sub Broker]"]:::redis
+        end
+
+        BrowserA -->|Comment/Upvote| CF
+        CF --> PublicELB
+        PublicELB --> NginxFE
+        NginxFE -->|Định tuyến REST API| PrivateALB
+        PrivateALB -->|Tải cân bằng| Node2
+
+        BrowserB ---|WebSocket Connection| Node1
+
+          Node2 -->|1. Lưu Comment/Upvote| Postgres
+          Node2 -->|2. Lưu Document thông báo| Mongo
+          Node2 -->|3. Tăng unread count INCR| Redis
+          Node2 -->|4. Publish sự kiện tới channel 'notifications'| Redis
+
+          Redis -.->|5. Broadcast sự kiện qua Pub/Sub| Node1
+          Redis -.->|Broadcast sự kiện qua Pub/Sub| Node2
+
+          Node1 -->|6. Gửi event 'notification' qua WS| BrowserB
+      </div>
+  </div>
+
+  <div style="margin-top:24px;margin-bottom:24px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
+    <h4 style="margin-bottom:12px;font-weight:500;color:var(--text-main);">Hình ảnh sơ đồ phân tích luồng Redis Pub/Sub thực tế:</h4>
+    <img src="./slide/redis-pub-sub-work.png" alt="Redis Pub/Sub Sync Flow Diagram" style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+  </div>
+
+  <h3 style="margin-top: 24px;">Sơ đồ Tuần tự bộ đệm Caching (Unread Count):</h3>
+      <div class="mermaid"
+        style="margin-top: 16px; margin-bottom: 24px; background: #0b0f19; border-radius: 12px; padding: 16px; border: 1px solid var(--border-color);">
+        sequenceDiagram
+        autonumber
+        actor UserB as Trình duyệt User B
+        participant Node1 as Backend EC2-1
+        participant Redis as Redis Cache (Port 6379)
+        participant Mongo as MongoDB (Port 27017)
+
+        UserB->>Node1: GET /api/notifications/unread-count
+        Note over Node1: Kiểm tra Cache trong Redis
+        Node1->>Redis: GET unread_count:UserB_ID
+
+        alt Cache HIT (Có dữ liệu trong Cache)
+        Redis-->>Node1: Trả về số lượng chưa đọc (Ví dụ: 5)
+        Node1-->>UserB: HTTP 200 { unreadCount: 5 } (Trả về ngay lập tức)
+        else Cache MISS (Chưa có dữ liệu hoặc cache hết hạn TTL)
+        Redis-->>Node1: Trả về null
+        Note over Node1: Truy vấn đếm trực tiếp trên MongoDB
+        Node1->>Mongo: countDocuments({ userId: UserB_ID, isRead: false })
+        Mongo-->>Node1: Trả về số lượng từ DB (Ví dụ: 5)
+        Note over Node1: Đồng bộ lưu lại số lượng vào Redis Cache (TTL 1 giờ)
+        Node1->>Redis: SETEX unread_count:UserB_ID 3600 5
+        Node1-->>UserB: HTTP 200 { unreadCount: 5 }
+        end
+      </div>
+
+      <h3 style="margin-top: 24px;">Chi tiết về Cơ chế Redis Pub/Sub:</h3>
+      <div class="callout" style="background-color: rgba(99, 102, 241, 0.05); border-left-color: var(--brand-color);">
+        <h5>📡 Kênh sự kiện Pub/Sub là gì?</h5>
+        <p><strong>Pub/Sub (Publish/Subscribe - Phát/Đăng ký)</strong> là mô hình truyền tin nhắn bất đồng bộ mà người gửi (Publisher) và người nhận (Subscriber) không giao tiếp trực tiếp. Thay vào đó, chúng kết nối thông qua một <strong>Kênh (Channel)</strong> trung gian.</p>
+        <ul>
+          <li><strong>Publisher (Node.js gửi tin)</strong>: Chỉ cần đẩy gói tin thông báo vào kênh chung (ví dụ: <code>'notifications'</code>) trên Redis mà không cần quan tâm máy chủ nào đang nhận hay có bao nhiêu Client kết nối.</li>
+          <li><strong>Subscriber (Các Node.js còn lại)</strong>: Đăng ký lắng nghe kênh chung trên Redis từ khi khởi chạy. Khi có tin nhắn mới, tất cả các Node đang online lập tức nhận được bản sao.</li>
+        </ul>
+      </div>
+
+      <div class="callout" style="background-color: rgba(16, 185, 129, 0.05); border-left-color: var(--accent-green);">
+        <h5>🚀 Tại sao chọn Redis làm kênh Pub/Sub cho hệ thống?</h5>
+        <ul>
+          <li><strong>Giải quyết bài toán Cluster WebSockets</strong>: Khi <strong>User B</strong> kết nối WebSocket tới <strong>EC2-1</strong>, nhưng request hành động của <strong>User A</strong> lại được ALB chuyển tới <strong>EC2-2</strong> để xử lý. Nhờ Redis Pub/Sub, <code>EC2-2</code> chỉ cần bắn tin lên Redis, Redis sẽ tự động phát sóng (broadcast) sang <code>EC2-1</code> để <code>EC2-1</code> đẩy tin trực tiếp tới trình duyệt User B.</li>
+          <li><strong>Tốc độ cực nhanh (In-Memory)</strong>: Nhờ chạy hoàn toàn trên RAM, thời gian truyền tải thông báo giữa các server thông qua Redis Pub/Sub chỉ mất chưa tới <strong>1 mili-giây</strong>.</li>
+          <li><strong>Bắn rồi quên (Fire-and-Forget)</strong>: Redis Pub/Sub không lưu trữ lịch sử tin nhắn trên RAM hay ổ đĩa. Nó chỉ đẩy tin tới các Node đang hoạt động rồi xóa ngay lập tức, giúp tránh phình bộ nhớ hệ thống.</li>
+          <li><strong>Tối ưu hạ tầng</strong>: Bạn tận dụng luôn server Redis hiện tại đang làm nhiệm vụ Caching đếm số lượng chưa đọc mà không cần cài đặt thêm các hệ thống Message Broker nặng nề khác (như RabbitMQ hay Kafka).</li>
+        </ul>
+      </div>
     </section>
 
     <!-- SECTION 8 -->
@@ -726,9 +843,15 @@ sudo systemctl reload nginx</code></pre>
         <li>Xóa cache trình duyệt (nhấn <code>Ctrl + F5</code> hoặc <code>Cmd + Shift + R</code>) để trình duyệt nhận
           diện file JavaScript mới. Mở F12 kiểm tra log thành công:
           <code style="color: var(--accent-green);">Connected to Socket.io notification server</code>
-        </li>
-      </ol>
-    </section>
+      </li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Kết quả Kiểm thử & Chạy thực tế (Demo Results):</h3>
+    <p>Dưới đây là hình ảnh ghi nhận kết quả kiểm thử chạy thực tế của hệ thống Clouddit (bao gồm hoạt động thông báo đẩy thời gian thực và logs kiểm tra tải):</p>
+    <div style="margin-top:20px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
+      <img src="./demo_images/Screenshot 2026-08-18 at 16.03.51.png" alt="Demo kết quả kiểm thử thực tế" style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+    </div>
+  </section>
 
     <!-- SECTION 9 -->
     <section id="troubleshooting">
@@ -790,14 +913,60 @@ nginx -T | grep -A 20 "location /socket.io/"</code></pre>
       </div>
 
       <div class="callout callout-warning">
-        <h5>⚠️ Lỗi 4: Lỗi 400 Bad Request (Session ID unknown) hoặc xhr post error khi chạy cụm đa Backend qua Load Balancer</h5>
-        <p><strong>Triệu chứng:</strong> Socket.io liên tục ngắt kết nối và tự động kết nối lại, bảng điều khiển Console báo các lỗi liên tiếp dạng <code>xhr poll error</code>, <code>xhr post error</code>, hoặc <code>400 Bad Request</code>.</p>
-        <p><strong>Nguyên nhân:</strong> Theo mặc định, Socket.io client thiết lập bắt tay bằng HTTP Long Polling trước rồi nâng cấp lên WebSockets. Tuy nhiên, trong cụm đa máy chủ (Multi-Backend EC2) đứng sau Cân bằng tải (Private ALB) mà không kích hoạt chế độ **Sticky Sessions** (Session Affinity), các request HTTP tuần tự từ cùng một client sẽ bị Load Balancer phân tán sang các Backend khác nhau. Khi Backend khác nhận được Session ID (`sid`) không thuộc về bộ nhớ của nó, nó sẽ từ chối và trả về lỗi 400.</p>
-        <p><strong>Cách xử lý:</strong> Cấu hình trực tiếp Socket.io client trong file <code>common.js</code> bỏ qua cơ chế HTTP Polling và **bắt buộc chạy duy nhất giao thức WebSockets** từ đầu. Vì WebSockets là kết nối TCP bền vững liên tục, nó sẽ giữ chặt kết nối với một Backend cố định và không bị Load Balancer định tuyến lại giữa chừng:</p>
+        <h5>⚠️ Lỗi 4: Lỗi 400 Bad Request (Session ID unknown) hoặc xhr post error khi chạy cụm đa Backend qua Load
+          Balancer</h5>
+        <p><strong>Triệu chứng:</strong> Socket.io liên tục ngắt kết nối và tự động kết nối lại, bảng điều khiển Console
+          báo các lỗi liên tiếp dạng <code>xhr poll error</code>, <code>xhr post error</code>, hoặc
+          <code>400 Bad Request</code>.
+        </p>
+        <p><strong>Nguyên nhân:</strong> Theo mặc định, Socket.io client thiết lập bắt tay bằng HTTP Long Polling trước
+          rồi nâng cấp lên WebSockets. Tuy nhiên, trong cụm đa máy chủ (Multi-Backend EC2) đứng sau Cân bằng tải
+          (Private ALB) mà không kích hoạt chế độ **Sticky Sessions** (Session Affinity), các request HTTP tuần tự từ
+          cùng một client sẽ bị Load Balancer phân tán sang các Backend khác nhau. Khi Backend khác nhận được Session ID
+          (`sid`) không thuộc về bộ nhớ của nó, nó sẽ từ chối và trả về lỗi 400.</p>
+        <p><strong>Cách xử lý:</strong> Cấu hình trực tiếp Socket.io client trong file <code>common.js</code> bỏ qua cơ
+          chế HTTP Polling và **bắt buộc chạy duy nhất giao thức WebSockets** từ đầu. Vì WebSockets là kết nối TCP bền
+          vững liên tục, nó sẽ giữ chặt kết nối với một Backend cố định và không bị Load Balancer định tuyến lại giữa
+          chừng:</p>
         <pre><code>socket = io(location.origin, {
     auth: { token },
     transports: ["websocket"] // Bắt buộc kết nối WebSockets trực tiếp
 });</code></pre>
+      </div>
+
+      <div class="callout callout-warning">
+        <h5>⚠️ Lỗi 5: Lỗi "There was a bad response from the server" khi kết nối WebSocket qua Public ELB</h5>
+        <p><strong>Triệu chứng:</strong> Trình duyệt báo lỗi đỏ
+          <code>WebSocket connection to 'wss://.../socket.io/?...' failed: There was a bad response from the server.</code>.
+          Kiểm tra log truy cập <code>/var/log/nginx/access.log</code> trên Frontend EC2 hoàn toàn **không** thấy bất kỳ
+          yêu cầu <code>/socket.io/</code> nào từ trình duyệt của người dùng gửi tới (chỉ thấy các log Health Check định
+          kỳ từ ALB).
+        </p>
+        <p><strong>Nguyên nhân:</strong> Bộ cân bằng tải ngoài cùng **Public ELB (Elastic Load Balancer)** của CMC Cloud
+          đang được cấu hình ở chế độ **Layer 7 (HTTP Listener)** trên cổng 80. Khi chạy ở chế độ này, ELB phân tích và
+          lọc bỏ các header nâng cấp giao thức như <code>Upgrade</code> và <code>Connection: Upgrade</code>, khiến kết
+          nối WebSocket bị đóng sập ngay tại Load Balancer trước khi chạm tới Frontend EC2.
+          <br><br>
+          <strong>Tại sao chuyển sang Layer 4 (TCP) lại thành công?</strong>
+          <br>
+          - <strong>Chế độ Layer 7 (HTTP)</strong>: ELB hoạt động như một HTTP Parser (bộ phân tích cú pháp ứng dụng).
+          Do dòng ELB cơ bản/cũ này không hỗ trợ WebSocket, nó tự động lọc bỏ các header bắt tay hoặc từ chối yêu cầu.
+          <br>
+          - <strong>Chế độ Layer 4 (TCP)</strong>: ELB hoạt động như một ống dẫn mạng thô (Raw Network Pipe). Nó không
+          đọc hay chỉnh sửa các HTTP Header bên trong mà chỉ chuyển tiếp nguyên vẹn luồng dữ liệu TCP trực tiếp xuống
+          <strong>Nginx Frontend EC2</strong>. Do Nginx Frontend là một máy chủ proxy Layer 7 hiện đại hỗ trợ đầy đủ
+          WebSockets (đã cấu hình block /socket.io/), Nginx sẽ tự động nhận diện và hoàn tất bắt tay WebSocket thành
+          công.
+        </p>
+        <p><strong>Cách xử lý:</strong> Đăng nhập vào trang quản trị CMC Cloud Portal:
+        <ul>
+          <li>Truy cập mục cấu hình Listener của Public ELB cổng 80 (ví dụ: <code>reddit-apl-listener</code>).</li>
+          <li>Thay đổi cấu hình **Load Balancer Type** từ **Layer 7** sang **Layer 4** (nút chọn bên cạnh).</li>
+          <li>Sau khi chọn Layer 4, trường **Protocol** sẽ tự động chuyển đổi thành **TCP** (Layer 4 TCP Listener).</li>
+          <li>Nhấn **Update Listener** để lưu cấu hình. Việc chuyển sang Layer 4 giúp ELB hoạt động như một ống dẫn mạng
+            thô, chuyển tiếp toàn bộ gói tin bắt tay WebSocket nguyên vẹn xuống Nginx xử lý.</li>
+        </ul>
+        </p>
       </div>
     </section>
   </main>
