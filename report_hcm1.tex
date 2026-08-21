@@ -1,0 +1,1963 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,vietnamese]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{eso-pic}
+\usepackage{tocloft}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+
+\definecolor{CMCBlue}{RGB}{0,91,170}
+\definecolor{LightBlue}{RGB}{235,245,252}
+
+\geometry{
+    a4paper,
+    left=20mm,
+    right=20mm,
+    top=25mm,
+    bottom=25mm
+}
+
+%----------------------------------------------------------------------------------------
+% MÀU SẮC
+%----------------------------------------------------------------------------------------
+
+\definecolor{CMCBlue}{RGB}{0,91,170}
+\definecolor{LightGray}{RGB}{245,245,245}
+
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=cyan,
+    citecolor=CMCBlue
+}
+
+%----------------------------------------------------------------------------------------
+% CODE STYLE
+%----------------------------------------------------------------------------------------
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    frame=single,
+    backgroundcolor=\color{LightGray},
+    breaklines=true,
+    columns=fullflexible,
+    showstringspaces=false
+}
+
+%----------------------------------------------------------------------------------------
+% TIÊU ĐỀ SECTION
+%----------------------------------------------------------------------------------------
+
+\titleformat{\section}
+{\color{CMCBlue}\Large\bfseries}
+{\thesection}
+{1em}
+{}
+
+\titleformat{\subsection}
+{\large\bfseries}
+{\thesubsection}
+{1em}
+{}
+
+\titleformat{\subsubsection}
+{\normalsize\bfseries}
+{\thesubsubsection}
+{1em}
+{}
+
+%----------------------------------------------------------------------------------------
+% MỤC LỤC
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\listfigurename}{Danh mục hình ảnh}
+\renewcommand{\listtablename}{Danh mục bảng}
+
+\renewcommand{\cfttoctitlefont}{\color{CMCBlue}\Large\bfseries}
+\renewcommand{\cftloftitlefont}{\color{CMCBlue}\Large\bfseries}
+\renewcommand{\cftlottitlefont}{\color{CMCBlue}\Large\bfseries}
+
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftafterloftitle}{\hfill}
+\renewcommand{\cftafterlottitle}{\hfill}
+
+\setlength{\cftsecindent}{0pt}
+\renewcommand{\cftsecdotsep}{\cftnodots}
+\renewcommand{\cftsecfont}{\normalfont\bfseries}
+\renewcommand{\cftsecpagefont}{\normalfont\bfseries}
+\setlength{\cftbeforesecskip}{10pt}
+
+%----------------------------------------------------------------------------------------
+% DOCUMENT
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\selectlanguage{vietnamese}
+
+%----------------------------------------------------------------------------------------
+% TRANG BÌA
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+
+\thispagestyle{empty}
+
+\AddToShipoutPictureBG*{%
+    \AtPageLowerLeft{%
+        \includegraphics[
+            width=\paperwidth,
+            height=\paperheight
+        ]{image/cmctelecom.jpg}%
+    }%
+}
+
+\vspace*{1.2cm}
+
+\noindent\makebox[\textwidth][c]{%
+    \setlength{\fboxsep}{22pt}%
+    \colorbox{white}{%
+        \begin{minipage}{0.82\textwidth}
+
+            \centering
+            \vspace{0.4cm}
+
+            {\LARGE
+            \textsc{CÔNG TY CỔ PHẦN HẠ TẦNG}\\[0.2cm]
+            \textsc{VIỄN THÔNG CMC}\par}
+
+            \vspace{0.8cm}
+
+            \graphicspath{{./logo/}}
+            \includegraphics[width=4.5cm]{CMC_logo.png}\\[1.2cm]
+
+            {\Large \textbf{PROJECT: HCM-1}}\\[0.8cm]
+
+            {\large \textbf{THÀNH VIÊN:}}\\[0.3cm]
+
+            {\large Huỳnh Minh Hiếu}\\[0.15cm]
+            {\large Cao Lê Gia Phú}\\[0.15cm]
+            {\large Phạm Đức Khải}\\[0.7cm]
+
+            {\large \textbf{CHỨC DANH:} CMC CLOUD FRESHER}\\[0.35cm]
+            {\large \textbf{BỘ PHẬN:} RAD}\\[1cm]
+
+            \rule{0.85\linewidth}{0.6mm}\\[0.5cm]
+
+            {\Large \textbf{BÁO CÁO PROJECT}}\\[0.5cm]
+
+            {\huge \bfseries
+            XÂY DỰNG ỨNG DỤNG CLOUDDIT
+            }\\[0.5cm]
+
+            \rule{0.85\linewidth}{0.6mm}\\[0.8cm]
+
+            {\large
+            \emph{\textbf{Thời gian thực hiện báo cáo:}}\\[0.2cm]
+            18/08/2026
+            \par}
+
+            \vspace{0.4cm}
+
+        \end{minipage}
+    }%
+}
+
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+% MỤC LỤC
+%----------------------------------------------------------------------------------------
+
+\tableofcontents
+\clearpage
+
+%----------------------------------------------------------------------------------------
+% DANH MỤC HÌNH ẢNH
+%----------------------------------------------------------------------------------------
+
+\listoffigures
+\clearpage
+
+%----------------------------------------------------------------------------------------
+% DANH MỤC BẢNG
+%----------------------------------------------------------------------------------------
+
+\listoftables
+\clearpage
+
+%========================================================================================
+% 1. TỔNG QUAN PROJECT
+%========================================================================================
+
+\section{Tổng quan Project}
+
+\subsection{Giới thiệu Project HCM-1}
+
+Project HCM-1 được thực hiện trong quá trình đào tạo và thực hành
+Cloud Infrastructure tại CMC Cloud. Mục tiêu của Project là xây dựng
+một hệ thống ứng dụng hoàn chỉnh trên hạ tầng Cloud, bao gồm các lớp
+mạng, máy chủ ảo, Load Balancer, Auto Scaling, Firewall và Database. \\
+
+\noindent Thông qua Project, nhóm thực hiện các nội dung chính như:
+
+\begin{itemize}
+    \item Thiết kế VPC và phân chia các subnet theo từng chức năng.
+    \item Triển khai Frontend và Backend trên các máy chủ ảo.
+    \item Sử dụng Public và Private Load Balancer.
+    \item Triển khai Auto Scaling cho tầng Backend.
+    \item Xây dựng hệ thống Firewall sử dụng pfSense.
+    \item Cô lập Database Subnet khỏi mạng Internet.
+    \item Sử dụng Bastion Host để quản trị tài nguyên bên trong VPC.
+    \item Triển khai PostgreSQL, MongoDB và Redis.
+    \item Kiểm thử routing, firewall, load balancing và khả năng truy cập ứng dụng.
+\end{itemize}
+
+\subsection{Mục tiêu xây dựng ứng dụng Clouddit}
+
+Clouddit là một ứng dụng mô phỏng mạng xã hội theo phong cách Reddit,
+được sử dụng làm workload để kiểm chứng hoạt động của hạ tầng. \\
+
+\noindent Ứng dụng hỗ trợ các chức năng chính như:
+
+\begin{itemize}
+    \item Đăng ký và đăng nhập người dùng.
+    \item Tạo bài viết và bình luận.
+    \item Upvote và Downvote bài viết.
+    \item Phân chia bài viết theo Community.
+    \item Upload hình ảnh trong bài viết.
+    \item Lưu bài viết.
+    \item Backend REST API.
+    \item Có khả năng mở rộng thêm notification và real-time.
+\end{itemize}
+
+\noindent Mục tiêu quan trọng của Project không chỉ là triển khai ứng dụng, mà còn xây dựng một hạ tầng có khả năng phân tách mạng, cân bằng tải, mở rộng và kiểm soát truy cập giữa các vùng.
+
+\subsection{Yêu cầu hệ thống}
+
+Hệ thống được thiết kế với các yêu cầu chính sau:
+
+\begin{enumerate}
+    \item Người dùng chỉ truy cập ứng dụng thông qua Public Load Balancer.
+    \item Frontend và Backend phải được tách thành hai tầng riêng biệt.
+    \item Backend không được public trực tiếp ra Internet.
+    \item Database được đặt trong Isolated Subnet và không có Public IP.
+    \item Traffic từ Backend đến Database phải đi qua pfSense Firewall.
+    \item Chỉ các Database Port cần thiết được phép đi qua Firewall.
+    \item Tầng Backend phải hỗ trợ Load Balancing và Auto Scaling.
+    \item Quản trị các máy chủ Private phải thực hiện thông qua Bastion Host.
+    \item WebGUI của pfSense không được mở tự do cho toàn bộ Internet.
+\end{enumerate}
+
+%========================================================================================
+% 2. KIẾN TRÚC HỆ THỐNG
+%========================================================================================
+
+\section{Kiến trúc hệ thống}
+
+\subsection{Mô hình kiến trúc tổng thể}
+
+Hệ thống Clouddit được thiết kế theo kiến trúc nhiều lớp,
+trong đó tầng Presentation, Application và Data được phân tách
+trên các subnet khác nhau.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/cmc-cloud-architecture.jpg}
+    \caption{Mô hình tổng thể của hệ thống Clouddit trên CMC Cloud}
+    \label{fig:cmc-cloud-architecture}
+\end{figure}
+
+Theo kiến trúc trong Hình~\ref{fig:cmc-cloud-architecture},
+hệ thống bao gồm ba vùng mạng chính:
+
+\begin{itemize}
+    \item \textbf{Public / DMZ Subnet - 192.168.4.0/24}: chứa Public Load Balancer, Các Frontend Server, Bastion Host và interface WAN của pfSense.
+
+    \item \textbf{Private Application Subnet - 192.168.6.0/24}: chứa
+    Private Load Balancer, Các Backend Node.js, Auto Scaling Group
+    và interface WEB của pfSense.
+
+    \item \textbf{Isolated Database Subnet - 192.168.7.0/24}: chứa
+    PostgreSQL, MongoDB, Redis và interface DB của pfSense.
+\end{itemize}
+
+\subsection{Các thành phần chính}
+
+Các thành phần của hệ thống bao gồm:
+
+\begin{itemize}
+    \item \textbf{Public Load Balancer}: Là điểm tiếp nhận traffic từ người dùng ở ngoài Internet và phân phối đến các Frontend Server.
+
+    \item \textbf{Frontend Servers}: chạy Nginx và giao diện Clouddit.
+    Nginx phục vụ file tĩnh và Reverse Proxy các request bắt đầu bằng \texttt{/api/*}
+    vào Private Load Balancer.
+
+    \item \textbf{Private Load Balancer}: Nằm ở vùng private subnet và phân phối API request đến nhiều Backend Node.js.
+
+    \item \textbf{Backend Server}: Xử lý logic nghiệp vụ của ứng dụng,
+    truy xuất dữ liệu và trả JSON cho Frontend.
+
+    \item \textbf{Auto Scaling Group}: Tự động quản lý số lượng
+    Backend Instance theo cấu hình Scaling Policy.
+
+    \item \textbf{pfSense Firewall}: Có vai trò như một Router và Stateful Firewall giữa Application Subnet và Database Subnet.
+
+    \item \textbf{Bastion Host}: Làm SSH Jump Host và điểm quản trị
+    các tài nguyên nằm trong mạng Private và Isolated.
+
+    \item \textbf{PostgreSQL}: Database quan hệ chính.
+
+    \item \textbf{MongoDB}: Database dạng document.
+
+    \item \textbf{Redis}: Cache và có thể sử dụng cho Pub/Sub,
+    session hoặc dữ liệu thời gian thực.
+\end{itemize}
+
+\subsection{Luồng hoạt động tổng thể}
+
+Luồng request của người dùng được thiết kế như sau: \\
+
+\begin{center}
+\textbf{
+Internet
+$\rightarrow$
+Public ELB
+$\rightarrow$
+Frontend
+$\rightarrow$
+Private ELB
+$\rightarrow$
+Backend
+$\rightarrow$
+pfSense
+$\rightarrow$
+Database
+} 
+\end{center} \\
+
+
+\noindent Cụ thể:
+
+\begin{enumerate}
+    \item Người dùng truy cập Public Load Balancer tại địa chỉ
+    \texttt{42.96.39.242} hoặc thông qua tên miền này \texttt{http://cmc-cloud-hcm1.cloud}.
+
+    \item Public Load Balancer phân phối traffic đến
+    Frontend-1 hoặc Frontend-2.
+
+    \item Frontend chạy Nginx và trả các tài nguyên HTML, CSS,
+    JavaScript cho trình duyệt.
+
+    \item Khi trình duyệt gọi API, ví dụ
+    \texttt{/api/posts}, request tiếp tục đi đến Nginx.
+
+    \item Nginx nhận diện đường dẫn có \texttt{/api/*}
+    và Reverse Proxy request đến Private Load Balancer
+    \texttt{192.168.6.126}.
+
+    \item Private Load Balancer lựa chọn một Backend đang ở trạng thái
+    HEALTHY trong Backend Pool.
+
+    \item Backend Node.js xử lý logic nghiệp vụ.
+
+    \item Nếu Backend cần truy cập Database Subnet,
+    route đến \texttt{192.168.7.0/24} sẽ đưa traffic đến
+    pfSense WEB \texttt{192.168.6.25}.
+
+    \item pfSense kiểm tra Firewall Rule và State Table.
+
+    \item Traffic hợp lệ được forward từ interface WEB
+    sang interface DB \texttt{192.168.7.6}.
+
+    \item Packet được chuyển đến PostgreSQL, MongoDB hoặc Redis
+    tùy theo dịch vụ Backend cần sử dụng.
+
+    \item Database gửi response trở lại Backend thông qua pfSense.
+
+    \item Backend trả response cho Private Load Balancer,
+    sau đó về Nginx Frontend và cuối cùng đến người dùng.
+\end{enumerate}
+
+%========================================================================================
+% 3. THIẾT KẾ VÀ CẤU HÌNH NETWORK
+%========================================================================================
+
+\section{Thiết kế và cấu hình Network}
+
+\subsection{Phân chia Subnet và địa chỉ IP}
+
+VPC của Project được chia thành ba subnet.
+
+\begin{table}[H]
+    \centering
+    \caption{Phân chia Subnet trong hệ thống}
+    \label{tab:subnet_config}
+
+    \renewcommand{\arraystretch}{1.4}
+    \setlength{\tabcolsep}{7pt}
+
+    \begin{tabularx}{\textwidth}{
+        >{\centering\arraybackslash}p{3cm}
+        >{\centering\arraybackslash}p{3cm}
+        >{\raggedright\arraybackslash}X
+        >{\raggedright\arraybackslash}X
+    }
+        \toprule
+
+        \rowcolor{CMCBlue}
+        \textcolor{white}{\textbf{Subnet}} &
+        \textcolor{white}{\textbf{CIDR}} &
+        \textcolor{white}{\textbf{Thành phần chính}} &
+        \textcolor{white}{\textbf{Chức năng}} \\
+
+        \midrule
+
+        \rowcolor{LightBlue}
+        \textbf{Public / DMZ} &
+        \texttt{192.168.4.0/24} &
+        Public ELB, Frontend-1, Frontend-2, Bastion Host, pfSense WAN &
+        Tiếp nhận traffic từ Internet và phục vụ truy cập, quản trị hệ thống. \\
+
+        \textbf{Private Application} &
+        \texttt{192.168.6.0/24} &
+        Private ELB, Backend Servers, Auto Scaling Group, pfSense WEB &
+        Xử lý logic ứng dụng, API và cân bằng tải nội bộ cho tầng Backend. \\
+
+        \rowcolor{LightBlue}
+        \textbf{Isolated Database} &
+        \texttt{192.168.7.0/24} &
+        PostgreSQL, MongoDB, Redis, pfSense DB &
+        Lưu trữ dữ liệu và cô lập Database khỏi truy cập trực tiếp từ Internet. \\
+
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Thông tin các thành phần}
+
+
+\begin{table}[H]
+    \centering
+    \caption{Địa chỉ IP các thành phần chính}
+    \label{tab:ip-address}
+
+    \renewcommand{\arraystretch}{1.35}
+    \setlength{\tabcolsep}{8pt}
+
+    \begin{tabularx}{\textwidth}{
+        >{\raggedright\arraybackslash}p{3.2cm}
+        >{\centering\arraybackslash}p{4.2cm}
+        >{\raggedright\arraybackslash}X
+    }
+        \toprule
+
+        \rowcolor{CMCBlue}
+        \textcolor{white}{\textbf{Thành phần}} &
+        \textcolor{white}{\textbf{Địa chỉ IP}} &
+        \textcolor{white}{\textbf{Chức năng}} \\
+
+        \midrule
+
+        \rowcolor{LightBlue}
+        \textbf{Public ELB} &
+        \texttt{42.96.39.242} &
+        Điểm truy cập công khai của ứng dụng. \\
+
+        \textbf{Frontend-1} &
+        \texttt{192.168.4.163} &
+        Nginx và giao diện Clouddit. \\
+
+        \rowcolor{LightBlue}
+        \textbf{Frontend-2} &
+        \texttt{192.168.4.99} &
+        Frontend thứ hai phục vụ Load Balancing và High Availability. \\
+
+        \textbf{Bastion Host} &
+        \texttt{192.168.4.29} \newline
+        \texttt{101.99.59.233} &
+        SSH Jump Host và máy chủ quản trị hệ thống. \\
+
+        \rowcolor{LightBlue}
+        \textbf{pfSense WAN} &
+        \texttt{192.168.4.45} \newline
+        \texttt{101.99.59.220} &
+        Interface Public/Management của pfSense. \\
+
+        \textbf{Private ELB} &
+        \texttt{192.168.6.126} &
+        Load Balancer nội bộ của tầng Backend. \\
+
+        \rowcolor{LightBlue}
+        \textbf{Backend-1} &
+        \texttt{192.168.6.228} &
+        Node.js Backend Server. \\
+
+        \textbf{Backend-2} &
+        \texttt{192.168.6.76} &
+        Node.js Backend Server. \\
+
+        \rowcolor{LightBlue}
+        \textbf{Backend ASG} &
+        \texttt{192.168.6.229} &
+        Backend Instance được tạo bởi Auto Scaling Group. \\
+
+        \textbf{pfSense WEB} &
+        \texttt{192.168.6.25} &
+        Interface kết nối Application Subnet với pfSense. \\
+
+        \rowcolor{LightBlue}
+        \textbf{pfSense DB} &
+        \texttt{192.168.7.6} &
+        Interface kết nối pfSense với Database Subnet. \\
+
+        \textbf{PostgreSQL} &
+        \texttt{192.168.7.251:5432} &
+        Cơ sở dữ liệu quan hệ chính của hệ thống. \\
+
+        \rowcolor{LightBlue}
+        \textbf{MongoDB} &
+        \texttt{192.168.7.155:27017} &
+        Cơ sở dữ liệu NoSQL. \\
+
+        \textbf{Redis} &
+        \texttt{192.168.7.117:6379} &
+        Cache và Pub/Sub cho ứng dụng. \\
+
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Route Table}
+
+Trong kiến trúc hiện tại, routing được sử dụng để đảm bảo
+traffic đi đúng qua các thành phần kiểm soát.
+
+\begin{itemize}
+    \item Public Subnet có khả năng giao tiếp với các thành phần Public như Public Load Balancer và Bastion Host. 
+    
+    \item Private Application Subnet chứa Backend và Private Load Balancer. Backend không cần có Public IP để phục vụ người dùng. 
+
+    \item Database Subnet được cô lập, không được expose trực tiếp
+    ra Internet.
+\end{itemize}
+
+
+
+\subsection{Routing từ Backend đến Database qua pfSense}
+
+Backend thuộc subnet \texttt{192.168.6.0/24} có gateway mặc định của Cloud (192.168.6.1). Tuy nhiên, để đảm bảo traffic đến Database Subnet không bypass pfSense, một route riêng được cấu hình. Nhóm có sử dụng:
+
+\begin{itemize}
+
+\item Lệnh:
+    \begin{lstlisting}[language=bash]
+    ip route replace 192.168.7.0/24 \
+    via 192.168.6.25 dev ens3
+    \end{lstlisting}
+
+\item Kiểm tra:
+
+    \begin{lstlisting}[language=bash]
+    ip route get 192.168.7.251
+    \end{lstlisting}
+
+\item Ví dụ trên Backend ASG \texttt{192.168.6.229}:
+
+    \begin{lstlisting}
+    192.168.7.251 via 192.168.6.25 \
+    dev ens3 src 192.168.6.229
+    \end{lstlisting} 
+
+\end{itemize}
+\noindent $\rightarrow$  Kết quả trên chứng minh traffic từ Backend đến PostgreSQL
+được gửi tới interface WEB của pfSense.
+
+%----------------------------------------------------------------------------------------
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/backend-route1.png}
+    \caption{Kiểm tra route từ Backend 1 đến Database qua pfSense}
+    \label{fig:backend-route}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/backend-route2.png}
+    \caption{Kiểm tra route từ Backend 2 đến Database qua pfSense}
+    \label{fig:backend-route}
+\end{figure}
+%========================================================================================
+% 4. TRIỂN KHAI PFSENSE
+%========================================================================================
+
+\section{Triển khai và cấu hình pfSense}
+
+\subsection{Vai trò của pfSense}
+
+Vai trò của pfSense trong kiến trúc hiện tại:
+
+\begin{itemize}
+
+\item pfSense trong hệ thống hiện tại đóng vai trò đồng thời là Router và Stateful Firewall.
+
+\item Tuy chỉ có một máy pfSense VM nhưng được gắn nhiều interface mạng để có thể tham gia vào nhiều subnet khác nhau.
+
+\item Trong kiến trúc hiện tại, pfSense có ba interface chính.
+
+\end{itemize}
+
+\begin{table}[H]
+    \centering
+    \caption{Các interface của pfSense}
+    \label{tab:pfsense-interface}
+
+    \renewcommand{\arraystretch}{1.4}
+    \setlength{\tabcolsep}{8pt}
+
+    \begin{tabularx}{\textwidth}{
+        >{\centering\arraybackslash}p{2.5cm}
+        >{\centering\arraybackslash}p{3.2cm}
+        >{\centering\arraybackslash}p{3.5cm}
+        >{\raggedright\arraybackslash}X
+    }
+        \toprule
+
+        \rowcolor{CMCBlue}
+        \textcolor{white}{\textbf{Interface}} &
+        \textcolor{white}{\textbf{Địa chỉ IP}} &
+        \textcolor{white}{\textbf{Subnet}} &
+        \textcolor{white}{\textbf{Chức năng}} \\
+
+        \midrule
+
+        \rowcolor{LightBlue}
+        \textbf{WAN} &
+        \texttt{192.168.4.45} &
+        \texttt{192.168.4.0/24} &
+        Kết nối pfSense với Public/DMZ Subnet và phục vụ quản trị hệ thống. \\
+
+        \textbf{WEB} &
+        \texttt{192.168.6.25} &
+        \texttt{192.168.6.0/24} &
+        Nhận và kiểm soát traffic từ các Backend Server trong Application Subnet. \\
+
+        \rowcolor{LightBlue}
+        \textbf{DB} &
+        \texttt{192.168.7.6} &
+        \texttt{192.168.7.0/24} &
+        Chuyển tiếp các kết nối được firewall cho phép đến Database Subnet. \\
+
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\noindent $\rightarrow$ Nhờ có nhiều interface, cùng một pfSense có thể đứng giữa nhiều security zone và kiểm soát traffic giữa các subnet.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/pfsense-interface.png}
+    \caption{Các interface WAN, WEB và DB trên pfSense}
+    \label{fig:pfsense-interface-img}
+\end{figure}
+
+\subsection{Firewall Rules}
+
+Traffic từ Backend đến Database đi vào pfSense thông qua interface WEB,
+do đó các rule chính được cấu hình trên interface này.
+
+\begin{table}[H]
+    \centering
+    \caption{Firewall Policy giữa Backend và Database}
+    \label{tab:firewall-rule}
+
+    \renewcommand{\arraystretch}{1.4}
+    \setlength{\tabcolsep}{8pt}
+
+    \begin{tabularx}{\textwidth}{
+        >{\centering\arraybackslash}p{3.2cm}
+        >{\centering\arraybackslash}p{3.6cm}
+        >{\centering\arraybackslash}p{2.8cm}
+        >{\raggedright\arraybackslash}X
+    }
+        \toprule
+
+        \rowcolor{CMCBlue}
+        \textcolor{white}{\textbf{Source}} &
+        \textcolor{white}{\textbf{Destination}} &
+        \textcolor{white}{\textbf{Port}} &
+        \textcolor{white}{\textbf{Action}} \\
+
+        \midrule
+
+        \rowcolor{LightBlue}
+        \texttt{192.168.6.0/24} &
+        \texttt{192.168.7.251} &
+        \texttt{5432} &
+        \textbf{ALLOW} - PostgreSQL \\
+
+        \texttt{192.168.6.0/24} &
+        \texttt{192.168.7.155} &
+        \texttt{27017} &
+        \textbf{ALLOW} - MongoDB \\
+
+        \rowcolor{LightBlue}
+        \texttt{192.168.6.0/24} &
+        \texttt{192.168.7.117} &
+        \texttt{6379} &
+        \textbf{ALLOW} - Redis \\
+
+        \texttt{192.168.6.0/24} &
+        \texttt{192.168.7.0/24} &
+        Các port khác &
+        \textbf{BLOCK} - Từ chối các kết nối không được cho phép \\
+
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\noindent Các rule ALLOW phải được đặt phía trên rule BLOCK tổng quát, do pfSense xử lý rule theo thứ tự từ trên xuống dưới.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{image/pfsense-rules.png}
+    \caption{Firewall Rules trên interface WEB}
+    \label{fig:pfsense-rules}
+\end{figure}
+
+\subsection{Cơ chế Stateful Firewall}
+
+\begin{itemize}
+
+\item pfSense theo dõi trạng thái của các connection thông qua State Table. Ví dụ Backend mở connection:
+
+        \begin{center}
+            \texttt{192.168.6.229:xxxxx}
+            $\rightarrow$
+            \texttt{192.168.7.251:5432}
+        \end{center}
+
+\item Nếu rule cho phép connection này, pfSense tạo State. Khi PostgreSQL trả response:
+        \begin{center}
+            \texttt{192.168.7.251:5432}
+            $\rightarrow$
+            \texttt{192.168.6.229:xxxxx}
+        \end{center}
+
+\item pfSense nhận biết đây là traffic phản hồi của connection đã được cho phép và forward packet trở lại Backend. \\
+
+\noindent $\rightarrow$ Do đó không cần tạo một rule chiều ngược riêng cho từng ephemeral port của Backend.
+
+\end{itemize}
+
+\subsection{Allowed Address Pair và Port Security}
+
+\begin{itemize}
+    \item Trong môi trường Cloud, Virtual NIC thường sử dụng cơ chế Port Security và Anti-Spoofing.
+
+    \item pfSense hoạt động như một Router nên packet được forward qua một interface có thể mang Source IP không phải IP của chính interface đó.
+
+    \begin{itemize}
+        \item Ví dụ packet:
+    
+            \begin{center}
+                Source: \texttt{192.168.6.229}\\
+                Destination: \texttt{192.168.7.251}
+            \end{center}
+    \end{itemize}
+    
+
+
+ $\rightarrow$ sẽ được pfSense forward qua interface DB.
+
+\end{itemize}
+
+\begin{itemize}
+
+\item Để Cloud Networking chấp nhận traffic forward bởi pfSense, Allowed Address Pair được cấu hình phù hợp trên các interface.
+
+\begin{itemize}
+    \item Logic cấu hình cho interface WEB (192.168.6.25):
+
+        \begin{lstlisting}
+            pfSense WEB:
+            192.168.6.25
+            
+            Allowed Address Pair:
+            192.168.7.0/24
+        \end{lstlisting}
+
+    \item và interface DB (192.168.7.6):
+        \begin{lstlisting}
+            pfSense DB:
+            192.168.7.6
+            
+            Allowed Address Pair:
+            192.168.6.0/24
+        \end{lstlisting}
+\end{itemize}
+
+\item Và Dĩ nhiên Allowed Address Pair không phải Firewall Rule. Firewall Rule quyết định traffic được ALLOW hoặc BLOCK. Allowed Address Pair chỉ cho phép hạ tầng Cloud chấp nhận traffic được Router/Firewall forward.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/pfsense-allow-pair-host.png}
+    \caption{Các Allowed address pair của từng interface trên pfSense}
+    \label{fig:Allow-address-pair-pfSense}
+\end{figure}
+
+\end{itemize}
+
+\subsection{Security Group}
+
+Ngoài Firewall Rule bên trong pfSense, các interface trên CMC Cloud còn được bảo vệ bởi Security Group. Có thể phân biệt các cơ chế như sau:
+
+\begin{itemize}
+    \item \textbf{Route}: quyết định packet đi đến next-hop nào.
+    \item \textbf{Security Group}: kiểm soát traffic tại Virtual NIC.
+    \item \textbf{Allowed Address Pair}: cho phép pfSense forward
+    packet của subnet khác.
+    \item \textbf{pfSense Rule}: quyết định traffic được ALLOW/BLOCK.
+    \item \textbf{State Table}: theo dõi connection đã được thiết lập.
+\end{itemize}
+
+%========================================================================================
+% 5. QUẢN TRỊ QUA BASTION
+%========================================================================================
+
+\section{Quản trị hệ thống thông qua Bastion Host}
+
+\subsection{Bastion Host}
+Bastion Host được triển khai trong Public Subnet.
+\begin{itemize}
+
+\item Thông tin:
+
+        \begin{itemize}
+            \item Private IP: \texttt{192.168.4.29}.
+            \item Public IP: \texttt{101.99.59.233}.
+        \end{itemize}
+
+\item Bastion đóng vai trò là SSH Jump Host để quản trị các tài nguyên
+Private mà không cần gán Public IP cho từng máy. Luồng quản trị như sau:
+
+\begin{center}
+\textbf{
+Admin PC
+$\rightarrow$
+Bastion Host
+$\rightarrow$
+Frontend / Backend / pfSense
+}
+\end{center}
+
+\end{itemize}
+
+\noindent $\rightarrow$ Bastion không nằm trên luồng traffic của người dùng.
+
+
+
+\subsection{SSH Tunnel quản trị pfSense}
+
+\begin{itemize}
+
+\item pfSense WebGUI được quản trị thông qua SSH Local Port Forwarding.
+
+\begin{itemize}
+\item Ví dụ từ máy Admin (Laptop):
+    
+    \begin{lstlisting}[language=bash]
+    ssh -L 8443:192.168.4.45:443 root@101.99.59.233 -N
+    \end{lstlisting}
+
+\item Sau khi thiết lập tunnel, luồng quản trị là:
+
+        \begin{center}
+        Admin PC
+        $\rightarrow$
+        Bastion
+        $\rightarrow$
+        pfSense WAN
+        \end{center}
+
+\item Port local:
+
+\begin{center}
+\texttt{127.0.0.1:8443}
+\end{center}
+
+$\rightarrow$ được forward tới:
+
+\begin{center}
+\texttt{192.168.4.45:443}
+\end{center}
+
+\end{itemize}
+
+\item Sau quá trình đó thì WebGUI có thể được truy cập thông qua:
+
+\begin{lstlisting}
+https://pfsense.home.arpa:8443
+\end{lstlisting}
+
+Cơ chế này giúp hạn chế việc mở trực tiếp WebGUI của pfSense
+cho toàn bộ Internet.
+
+\end{itemize}
+%========================================================================================
+% 6. FRONTEND
+%========================================================================================
+
+\section{Triển khai hệ thống Frontend}
+
+\subsection{Frontend Server}
+
+\begin{itemize}
+
+\item Hệ thống sử dụng hai Frontend Server:
+
+        \begin{itemize}
+            \item Frontend-1: \texttt{192.168.4.163}.
+            \item Frontend-2: \texttt{192.168.4.99}.
+        \end{itemize}
+
+\item Đồng thời, cả hai máy chạy Nginx và cùng chứa bộ mã nguồn giao diện Clouddit.
+
+\item Public Load Balancer phân phối traffic đến hai máy Frontend nhằm giảm Single Point of Failure tại tầng Presentation.
+\end{itemize}
+
+\subsection{Reverse Proxy trên Nginx}
+
+\begin{itemize}
+
+\item Frontend JavaScript không gọi trực tiếp đến từng Backend Server mà các request API sử dụng đường dẫn tương đối sau:
+    
+    \begin{lstlisting}
+    fetch("/api/posts")
+    \end{lstlisting}
+
+\item Đồng thời Nginx có cấu hình Reverse Proxy nếu request có tồn tại \texttt{/api/} thì sẽ pass tới các web server để xử lý:
+
+\begin{lstlisting}
+location /api/ {
+    proxy_pass http://192.168.6.126;
+}
+\end{lstlisting}
+
+\item Luồng xử lý như sau:
+
+\begin{center}
+Browser
+$\rightarrow$
+Frontend Nginx
+$\rightarrow$
+Private ELB
+$\rightarrow$
+Backend
+\end{center}
+\end{itemize}
+
+$\rightarrow$ Nhờ đó Browser không cần biết địa chỉ IP của Backend hoặc Private Load Balancer.
+
+
+%========================================================================================
+% 7. LOAD BALANCER
+%========================================================================================
+
+\section{Triển khai Load Balancer}
+
+\subsection{Public Load Balancer}
+
+\begin{itemize}
+    \item Mỗi khi khởi tạo Public Load Balancer thì thường được cấp một VIP tức là một đỉa chỉ ip public ảo:
+
+        \begin{center}
+        \texttt{42.96.39.242}
+        \end{center}
+        
+    \item Theo kiến trúc của nhóm thì Public ELB là điểm tiếp nhận traffic chính của người dùng. 
+    
+    \item Frontend Pool gồm:
+        \begin{itemize}
+            \item Frontend-1: \texttt{192.168.4.163:80}.
+            \item Frontend-2: \texttt{192.168.4.99:80}.
+        \end{itemize}
+
+\item Health Monitor kiểm tra trạng thái Nginx trên từng Frontend. Frontend không còn HEALTHY sẽ bị loại tạm thời khỏi quá trình phân phối request.
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/public-elb.png}
+    \caption{Public Load Balancer}
+    \label{fig:public-elb}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/public_pool.png}
+    \caption{Pool target của Public Load Balancer}
+    \label{fig:pool-target-public-loadbalancer}
+\end{figure}
+
+\subsection{Private Load Balancer}
+
+\begin{itemize}
+
+\item Private Load Balancer được khởi tạo ở private subnet và có địa chỉ:
+
+\begin{center}
+\texttt{192.168.6.126}
+\end{center}
+
+\item Private ELB không được public trực tiếp ra Internet. Nginx Frontend Reverse Proxy các request \texttt{/api/*}
+đến Private ELB.
+
+\item Backend Pool hiện có các Backend:
+
+\begin{itemize}
+    \item Backend-1: \texttt{192.168.6.228:3000}.
+    \item Backend-2: \texttt{192.168.6.76:3000}.
+    \item Backend ASG: \texttt{192.168.6.229:3000}. (AS hiện tại bị lỗi Backend theo các anh Cloud đã giải đáp)
+\end{itemize}
+
+\item Health Monitor kiểm tra endpoint:
+
+    \begin{lstlisting}
+    /health
+    \end{lstlisting}
+
+\noindent $\rightarrow$ Mã phản hồi mong đợi là HTTP 200.
+
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/private-elb.png}
+    \caption{Private Load Balancer}
+    \label{fig:private-elb}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/pool-private-elb.png}
+    \caption{Pool target của Private Load Balancer}
+    \label{fig:pool-private-elb}
+\end{figure}
+
+\subsection{Kiểm tra Load Balancing}
+
+Private ELB được kiểm tra bằng cách gửi nhiều request:
+
+\begin{lstlisting}[language=bash]
+for i in {1..10}; do
+    curl -s http://192.168.6.126/health
+    echo
+done
+\end{lstlisting}
+
+\noindent Ví dụ kết quả mong đợi:
+
+\begin{lstlisting}
+{"status":"healthy","server":"backend-1"}
+{"status":"healthy","server":"backend-2"}
+{"status":"healthy","server":"backend-1"}
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/test-elb.png}
+    \caption{Kết quả phân tải đến các target backend của pool target}
+    \label{fig:test-elb}
+\end{figure}
+
+\noindent $\rightarrow$ Kết quả cho thấy Private ELB đang phân phối request đến nhiều Backend khác nhau.
+
+
+
+\section{Triển khai Auto Scaling}
+
+\subsection{Golden Image và Auto Scaling Configuration}
+
+\begin{itemize}
+    \item Nhóm sử dụng một Backend Server hoạt động ổn định được sử dụng để tạo Golden Image (Backend-Server-1).
+
+    \item Image chứa các thành phần cần thiết như:
+        
+        \begin{itemize}
+            \item Hệ điều hành.
+            \item Node.js Runtime.
+            \item Mã nguồn Backend.
+            \item Dependency của ứng dụng.
+            \item Service tự động chạy Backend khi máy khởi động.
+            \item Cấu hình route đến Database Subnet qua pfSense.
+        \end{itemize}
+
+    \item Golden Image được sử dụng trong Auto Scaling Configuration để tạo các Backend Instance mới có cấu hình đồng nhất.
+\end{itemize}
+
+
+
+\subsection{Auto Scaling Group}
+
+\begin{itemize}
+
+
+\item Auto Scaling Group quản lý số lượng Backend Server
+theo giới hạn Min, Expected và Max. Trong quá trình triển khai, một instance được Auto Scaling tạo có địa chỉ:
+
+\begin{center}
+\texttt{192.168.6.229}
+\end{center}
+
+\item Instance mới phải đảm bảo:
+
+\begin{itemize}
+    \item Node.js Backend chạy trên port 3000.
+    \item Health endpoint trả trạng thái HEALTHY.
+    \item Có route đến Database qua pfSense.
+    \item Được thêm vào Backend Pool của Private ELB.
+\end{itemize}
+
+\item Kiểm tra route:
+
+\begin{lstlisting}[language=bash]
+ip route get 192.168.7.251
+\end{lstlisting}
+
+\item Kết quả:
+
+\begin{lstlisting}
+192.168.7.251 via 192.168.6.25 dev ens3 src 192.168.6.229
+\end{lstlisting}
+
+\end{itemize}
+
+\noindent $\rightarrow$ Do chức năng này vẫn còn bị lỗi nên nhóm em vẫn chưa test được hoàn chỉnh ạ, chỉ lý giải theo lý thuyết thôi.
+
+%========================================================================================
+% 9. DATABASE
+%========================================================================================
+
+\section{Triển khai Database}
+
+\subsection{PostgreSQL}
+
+\begin{itemize}
+
+\item PostgreSQL được triển khai tại subnet isolated (192.168.7.0/24), ip cụ thể của nó là:
+
+\begin{center}
+\texttt{192.168.7.251:5432}
+\end{center}
+
+\item Nhóm sử dụng PostgreSQL trong kiến trúc hiện tại để lưu trữ các dữ liệu quan hệ chính của ứng dụng như:
+
+\begin{itemize}
+    \item User.
+    \item Community.
+    \item Post.
+    \item Comment.
+    \item Vote.
+\end{itemize}
+
+\item Backend sử dụng PostgreSQL Client Library để kết nối Database. Ví dụ thông tin cấu hình như sau:
+
+\begin{lstlisting}
+DB_HOST=192.168.7.251
+DB_PORT=5432
+DB_NAME=reddit_app
+\end{lstlisting}
+
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/postgre_db.png}
+    \caption{Postgre dashboard}
+\end{figure}
+
+
+\subsection{MongoDB}
+
+\begin{itemize}
+
+\item Tương tự như PostgreSQL thì MongoDB cũng được đặt tại isolated subnet (192.168.7.0/24), ip cụ thể của nó là:
+
+\begin{center}
+\texttt{mongodb://{username}:{password}@192.168.7.155:27017/{db-name}?authSource=admin}
+\end{center}
+
+\item MongoDB được định hướng sử dụng cho các dữ liệu dạng document hoặc các dữ liệu có tần suất ghi cao.
+
+\end{itemize}
+\subsection{Redis}
+\begin{itemize}
+\item Redis được triển khai tại isolated subnet (192.168.7.0/24), truy cập qua địa chỉ:
+\begin{center}
+\texttt{192.168.7.117:6379}
+\end{center}
+\item Redis chạy hoàn toàn In-Memory nên có độ trễ đọc/ghi ở mức micro giây, phù hợp cho hai vai trò chính trong hệ thống: \textbf{Caching} (giảm tải truy vấn đếm số thông báo chưa đọc xuống MongoDB) và \textbf{Pub/Sub Broker} (đồng bộ sự kiện WebSocket giữa nhiều Backend EC2 đứng sau Private ALB).
+\item Do dữ liệu trong Redis chỉ mang tính tạm thời (volatile), nhóm không cấu hình backup cho Redis: nếu Redis restart hoặc mất dữ liệu, hệ thống sẽ tự sinh lại cache thông qua cơ chế Cache Miss, không ảnh hưởng đến tính đúng đắn của dữ liệu.
+\end{itemize}
+
+\subsubsection{Cơ chế Caching — Đếm số thông báo chưa đọc}
+ \textbf{Cache-Aside Pattern} cho endpoint \texttt{GET /api/notifications/unread-count}, nhằm tránh việc mỗi lần load trang đều phải chạy \texttt{countDocuments()} trực tiếp trên MongoDB — thao tác gây nghẽn I/O khi có hàng nghìn user hoạt động đồng thời.
+
+\begin{itemize}
+\item \textbf{Cache HIT}: Backend gọi \texttt{GET unread\_count:\{userId\}}. Nếu Redis có sẵn giá trị, trả về ngay cho client với thời gian phản hồi dưới 1ms, không chạm vào MongoDB.
+\item \textbf{Cache MISS}: Nếu key không tồn tại (chưa từng cache hoặc đã hết hạn TTL), Backend truy vấn MongoDB, sau đó ghi lại kết quả vào Redis bằng lệnh:
+\begin{lstlisting}
+SETEX unread_count:{userId} 3600 {count}
+\end{lstlisting}
+với TTL 3600 giây (1 giờ), đảm bảo cache không tồn tại vĩnh viễn và tự làm mới định kỳ.
+\item \textbf{Cập nhật khi có thông báo mới}: thay vì xóa cache và bắt buộc query lại, Backend tăng trực tiếp bộ đếm bằng \texttt{INCR unread\_count:\{userId\}} — chiến lược Write-through giúp giảm số lần truy vấn MongoDB không cần thiết.
+\item \textbf{Vô hiệu hóa cache khi người dùng đọc thông báo}: khi đọc từng thông báo, hệ thống gọi \texttt{DEL unread\_count:\{userId\}} để buộc lần gọi kế tiếp tính lại chính xác từ MongoDB; khi đánh dấu "đọc tất cả", hệ thống ghi đè thẳng \texttt{SETEX unread\_count:\{userId\} 3600 0} vì đã biết chắc số lượng bằng 0.
+\end{itemize}
+
+\subsubsection{Cơ chế Pub/Sub — Đồng bộ WebSocket đa máy chủ}
+Kiến trúc Backend chạy tối thiểu 2 instance EC2 (Backend EC2-1: 192.168.6.228, Backend EC2-2: 192.168.6.76) phía sau Private ELB để đảm bảo khả năng mở rộng ngang (horizontal scaling).
+Vấn đề phát sinh: kết nối WebSocket (Socket.io) của một user chỉ được lưu trong bộ nhớ RAM cục bộ của đúng một instance mà user đó đang giữ phiên — nếu sự kiện tương tác (upvote, comment) lại được xử lý bởi instance còn lại, thông báo real-time sẽ bị mất trừ khi user tự reload trang.
+
+Redis Pub/Sub giải quyết vấn đề này bằng cách đóng vai trò \textbf{Message Broker} trung gian:
+\begin{enumerate}
+\item Cả hai Backend instance khi khởi động đều mở kết nối TCP bền vững tới Redis và thực thi \texttt{SUBSCRIBE notifications}, lắng nghe chung một kênh.
+\item Khi một instance (ví dụ EC2-2) xử lý request tương tác: ghi bản ghi vào PostgreSQL (comment/vote), ghi document thông báo vào MongoDB, rồi đóng gói sự kiện thành JSON và gọi:
+\begin{lstlisting}
+PUBLISH notifications {"userId": A, "notification": {...}}
+\end{lstlisting}
+\item Redis Server nhận sự kiện trên kênh \texttt{notifications} và nhân bản, phát (broadcast) đồng thời tới toàn bộ các instance đang subscribe — không quan tâm instance nào gửi lên.
+\item Mỗi instance nhận được payload sẽ quét danh sách socket đang hoạt động trong RAM cục bộ của chính nó: instance nào đang giữ kết nối của user đích (User A) sẽ gọi \texttt{io.to(userA\_socketId).emit(\allowbreak "notification", data)} để đẩy dữ liệu qua WebSocket; instance còn lại không tìm thấy kết nối sẽ bỏ qua một cách an toàn.
+\end{enumerate}
+
+Nhờ cơ chế này, các Backend instance hoàn toàn \textbf{stateless} về mặt phiên WebSocket giữa các máy: Private ELB có thể phân phối traffic ngẫu nhiên (round-robin) mà không cần cấu hình Sticky Session, vì việc "tìm đúng máy chủ đang giữ kết nối user" đã được Redis Pub/Sub đảm nhiệm thay vì phụ thuộc vào tầng Load Balancer. Độ trễ đo thực tế của việc phân phối sự kiện qua Redis Pub/Sub kết hợp WebSocket chỉ khoảng 10–20ms.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/redis-pub-sub-work.png}
+    \caption{Luồng đồng bộ real-time qua Redis Pub/Sub giữa hai Backend instance}
+\end{figure}
+
+\subsection{Chính sách Backup \& Disaster Recovery}
+Vì ba database đảm nhận vai trò khác nhau, nhóm áp dụng chính sách sao lưu theo mức độ quan trọng của dữ liệu (Backup Audit):
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{2.2cm}|p{2.6cm}|p{6cm}|p{2cm}|}
+\hline
+\textbf{Database} & \textbf{Mức độ} & \textbf{Chính sách Backup} & \textbf{RPO} \\
+\hline
+PostgreSQL & Class A — Critical & Daily Snapshot (30 ngày) + WAL liên tục (7 ngày) & $<$ 5 phút \\
+MongoDB & Class B — Important & Daily Snapshot (14 ngày) & $<$ 24 giờ \\
+Redis & Class C — Volatile & Không backup, tự sinh lại từ Cache Miss & Không áp dụng \\
+\hline
+\end{tabular}
+\caption{Chính sách backup theo phân loại dữ liệu}
+\label{tab:backup_policy}
+\end{table}
+
+\subsubsection{Phân loại dữ liệu sao lưu (Backup Classification)}
+\begin{itemize}
+    \item \textbf{PostgreSQL (Class A — Critical — Dữ liệu cốt lõi)}: Lưu trữ thông tin người dùng, bài viết, bình luận, và các mối quan hệ quan trọng. Đây là "Source of Truth" của toàn bộ hệ thống Clouddit. Nếu mất mát dữ liệu này, hệ thống sẽ bị tê liệt hoàn toàn. Do đó, chính sách yêu cầu sao lưu tự động hàng ngày (Daily Snapshot) kết hợp lưu trữ nhật ký ghi trước (WAL) liên tục mỗi 5 phút lên Object Storage (PITR), thời gian lưu trữ snapshot là 30 ngày và WAL là 7 ngày.
+    \item \textbf{MongoDB (Class B — Important — Nhật ký thông báo)}: Lưu lịch sử thông báo đẩy. Dữ liệu này có dạng phi cấu trúc và tần suất ghi rất lớn. Khi mất mát, người dùng chỉ bị mất lịch sử thông báo cũ, không ảnh hưởng đến chức năng cốt lõi. Do đó, hệ thống chỉ cấu hình chụp Daily Snapshot (lưu trữ 14 ngày) và không kích hoạt WAL/PITR để giảm tải dung lượng đĩa.
+    \item \textbf{Redis (Class C — Volatile — Bộ nhớ đệm tạm thời)}: Chỉ lưu trữ dữ liệu đếm số lượng chưa đọc tạm thời và làm môi trường Pub/Sub. Hệ thống áp dụng chính sách \textbf{Không sao lưu}. Do Redis hoạt động hoàn toàn trên RAM (In-Memory), việc ghi đĩa liên tục (AOF/RDB) sẽ làm giảm hiệu năng hệ thống nghiêm trọng và gây lãng phí dung lượng. Nếu Redis bị sập, dữ liệu cache sẽ tự động sinh lại từ MongoDB thông qua cơ chế Cache Miss.
+\end{itemize}
+
+\subsubsection{Quy trình thiết lập Backup trên CMC Cloud Portal}
+Để triển khai hệ thống backup chuẩn Production trên portal quản trị CMC Cloud, nhóm thực hiện cấu hình các bước:
+\begin{enumerate}
+    \item \textbf{Cấu hình khung giờ sao lưu (Backup Window)}: Cài đặt giờ bắt đầu sao lưu tự động vào lúc \texttt{03:00 AM} (giờ thấp tải nhất đối với traffic người dùng Việt Nam) nhằm giảm thiểu ảnh hưởng của I/O lag lên các giao dịch ghi của database chính.
+    \item \textbf{Kích hoạt Point-in-Time Recovery (PITR)}: Trong mục cấu hình PostgreSQL, bật tính năng \textbf{Continuous Backups}. Hệ thống sẽ tự động đóng gói tệp WAL và đẩy lên phân vùng Object Storage (S3-compatible) biệt lập cứ mỗi 5 phút.
+    \item \textbf{Sao chép chéo vùng (Cross-Region Replication)}: Để đề phòng rủi ro thảm họa cấp Datacenter (sập hoàn toàn Zone HCM-1), thiết lập tự động đồng bộ bản snapshot hàng ngày từ \textbf{Zone HCM-1} sang \textbf{Zone HN-1}.
+    \item \textbf{Mã hóa bản sao lưu (Backup Encryption)}: Tất cả các bản snapshot được bật mã hóa tự động ở trạng thái nghỉ bằng thuật toán \textbf{AES-256} thông qua dịch vụ quản lý khóa KMS của CMC Cloud.
+\end{enumerate}
+
+\subsubsection{Quy trình khôi phục dữ liệu chuẩn Production (Restore Procedures)}
+Nhóm tuyệt đối tuân thủ nguyên tắc vàng trong môi trường Production: \textbf{Không bao giờ khôi phục đè (restore inplace) trực tiếp lên instance database đang hoạt động (Active DB)}. Mọi quy trình restore đều bắt buộc khôi phục ra một \textbf{Instance mới (New DB Instance)} để kiểm tra tính toàn vẹn trước khi trỏ kết nối vào.
+
+Quy trình phục hồi PostgreSQL về một thời điểm cụ thể (Point-in-Time Recovery) khi xảy ra sự cố phá hoại dữ liệu (ví dụ hacker xóa bảng lúc 10:15:30 AM):
+\begin{enumerate}
+    \item \textbf{Khởi tạo Restore Instance}: Vào Portal CMC Cloud, chọn instance bị lỗi và click \textbf{Restore to point in time}. Chọn thời điểm khôi phục là \texttt{10:15:00 AM} (trước khi xảy ra lỗi 30 giây). Đặt tên instance mới là \texttt{clouddit-pg-restored}. Hệ thống sẽ tự động lấy bản snapshot gần nhất và áp các file WAL để dựng lại DB.
+    \item \textbf{Kiểm tra dữ liệu}: Kỹ sư vận hành sử dụng Bastion Host kết nối vào instance mới để kiểm tra cấu trúc bảng, đếm số lượng bản ghi xem dữ liệu đã được phục hồi sạch sẽ và đầy đủ chưa.
+    \item \textbf{Chuyển hướng traffic (Cutover)}: Cập nhật biến môi trường \texttt{DB\_HOST} trong tệp cấu hình \texttt{.env} của toàn bộ cụm máy chủ Backend Node.js trỏ về địa chỉ IP nội bộ mới của \texttt{clouddit-pg-restored}. Thực hiện reload lại cụm PM2: \texttt{pm2 reload all} để cập nhật kết nối tức thời không gián đoạn.
+    \item \textbf{Dọn dẹp tài nguyên}: Giữ instance cũ bị lỗi trong vòng 48 tiếng để phục vụ công tác đối chiếu logs và phân tích sự cố, sau đó tiến hành shutdown và xóa bỏ để tránh lãng phí chi phí.
+\end{enumerate}
+
+\subsubsection{Các chỉ số mục tiêu phục hồi thảm họa (Disaster Recovery Metrics)}
+Nhóm cam kết hai chỉ số đo lường hiệu năng khôi phục thảm họa chuẩn doanh nghiệp:
+\begin{itemize}
+    \item \textbf{RPO (Recovery Point Objective — Điểm phục hồi mục tiêu)}: Khoảng thời gian mất mát dữ liệu tối đa chấp nhận được.
+    \begin{itemize}[nosep]
+        \item \textit{PostgreSQL}: \textbf{RPO $<$ 5 phút} (nhờ cơ chế liên tục đẩy file WAL lên Object Storage).
+        \item \textit{MongoDB}: \textbf{RPO $<$ 24 giờ} (do chỉ chụp snapshot daily).
+    \end{itemize}
+    \item \textbf{RTO (Recovery Time Objective — Thời gian phục hồi mục tiêu)}: Tổng thời gian tối đa để hệ thống khôi phục hoạt động bình thường kể từ khi sự cố xảy ra.
+    \begin{itemize}[nosep]
+        \item \textit{Toàn hệ thống}: \textbf{RTO $<$ 30 phút} (bao gồm thời gian tạo dựng instance mới trên CMC Portal và chuyển đổi biến môi trường, reload PM2).
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Kết nối Backend đến Database}
+
+\begin{itemize}
+
+\item Backend không truy cập Database trực tiếp qua gateway mặc định mà sẽ được ép đi qua gateway của đi vào của interface web của pfSense là 192.168.6.25.
+
+\item Mặc định trong Cloud network của CMC Cloud thì khi backend truy cập sang Database thì nó sẽ đi qua gateway của nó là 192.168.6.1 sau đó đến Database nhưng cách này sẽ gây ra tình trạng bypass pfSense tức là không lọc được traffic mong muốn nên phải ép traffic của Backend đi sang gateway của pfSense là 192.168.6.25 để pfSense quyết định xem có tiếp tục forward gói tin hay không.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/gatewaypfsense.png}
+    \caption{Đường đi của Backend khi gửi yêu cầu tới DB}
+    \label{fig:gatewaypfsense}
+\end{figure}
+
+\item Luồng kết nối:
+
+    \begin{center}
+    Backend
+    $\rightarrow$
+    pfSense WEB
+    $\rightarrow$
+    pfSense DB
+    $\rightarrow$
+    Database
+    \end{center}
+
+\item Các Database port được Firewall Policy kiểm soát riêng.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/all_DBconnection_logs.png}
+    \caption{Log của backend kết nối tới Polyglot Persistence (Đa cơ sở dữ liệu )}
+
+\end{figure}
+
+
+\end{itemize}
+%========================================================================================
+% 10. KIỂM THỬ FIREWALL VÀ ROUTING
+%========================================================================================
+
+\section{Kiểm thử Firewall và Routing}
+
+\subsection{Kiểm tra PostgreSQL}
+
+\begin{itemize}
+
+\item Từ Backend khởi tạo kết nối tới PostgreSQL:
+
+\begin{lstlisting}[language=bash]
+nc -zv -w 5 192.168.7.251 5432
+\end{lstlisting}
+
+
+
+\item Kết quả dự kiến là kết nối tới PostgreSQL thành công:
+
+    \begin{lstlisting}
+Connection to 192.168.7.251 5432 port [tcp/postgresql] succeeded!
+    \end{lstlisting}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{image/connect-postgresql}
+        \caption{Kết nối từ web server 1 đến PostgreSQL}
+        \label{fig:connect-postgresql}
+    \end{figure}
+\end{itemize} 
+
+\subsection{Kiểm tra MongoDB}
+
+\begin{itemize}
+
+    \item Từ Backend khởi tạo kêt nối tới MongoDB thông qua cổng 27017:
+        \begin{lstlisting}[language=bash]
+nc -zv -w 5 192.168.7.155 27017
+        \end{lstlisting}
+
+    \item Port 27017 được kết nối thành công:
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{image/mongodb.png}
+        \caption{Kết nối từ web server 1 tới MongoDB thành công}
+        \label{fig:connect-mongodb}
+    \end{figure}
+
+\end{itemize}
+
+\subsection{Kiểm tra Redis}
+
+\begin{itemize}
+
+\item Từ Backend khởi tạo kết nối tới Redis thông qua port 6379:
+
+\begin{lstlisting}[language=bash]
+nc -zv -w 5 192.168.7.117 6379
+\end{lstlisting}
+
+\item Port 6379 được kết nối thành công:
+
+ \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{image/redis.png}
+        \caption{Kết nối từ web server 1 tới Redis thành công}
+        \label{fig:connect-redis}
+    \end{figure}
+
+\end{itemize}
+
+\subsection{Kiểm tra port bị chặn}
+
+\begin{itemize}
+
+\item Ví dụ SSH đến PostgreSQL:
+
+    \begin{lstlisting}[language=bash]
+nc -zv -w 3 192.168.7.251 22
+    \end{lstlisting}
+
+\item Kết quả mong đợi là timeout hoặc bị Firewall chặn:
+\end{itemize}
+
+ \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{image/ssh-block.png}
+        \caption{Kết nối không thành công tới PostgreSQL ở port 22}
+        \label{fig:connect-postgresql-22}
+    \end{figure}
+
+\noindent $\rightarrow$ Điều này chứng minh Backend không được tùy ý truy cập
+mọi port của Database.
+
+
+
+\subsection{Firewall Log}
+
+\begin{itemize}
+
+\item Firewall Log trên pfSense được sử dụng để kiểm tra rule đã xử lý traffic. Ví dụ traffic PostgreSQL hợp lệ:
+
+    \begin{center}
+    \texttt{192.168.6.x:*}
+    $\rightarrow$
+    \texttt{192.168.7.251:5432}
+    \end{center}
+
+\item Nếu mà match rule thì sẽ có ở log của pfSense kiểu:
+
+\begin{center}
+\textbf{Allow WEB to PostgreSQL}
+\end{center}
+
+\begin{center}
+\textbf{Allow backend to mongo}
+\end{center}
+
+\begin{center}
+    \textbf{Allow Backend to Redis}
+\end{center}
+
+\item Trong khi các port không được phép sẽ match rule:
+
+\begin{center}
+\textbf{Block other WEB to DB}
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{image/pfsense-firewall-log.png}
+    \caption{Firewall Log ghi nhận traffic được phép và bị chặn}
+    \label{fig:pfsense-log}
+\end{figure}
+
+\end{itemize}
+
+\subsection{Packet Capture}
+
+\begin{itemize}
+
+\item Packet Capture được thực hiện trên cả interface WEB (vtnet1) và DB (vtnet2) của pfSense. 
+
+\item Ở console của pfSense nhập lệnh tcpdump để tiến hành bằng gói tin trên vtnet1 và vtnet2. Sau đó tiến hành bật kết nối giữa web server 1 tới postgresql ở port 5432 bằng lệnh sau:   \\  
+
+    \begin{lstlisting}[language=bash]
+nc -zv -w 3 192.168.7.251 5432
+    \end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/pfsense-packet-capture1.png}
+    \caption{Bật bắt gói tin trên console của pfSense ở interface WEB (vtnet1)}
+    \label{fig:pfsense-packet-capture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/pfsense-packet-capture2.png}
+    \caption{Bật bắt gói tin trên console của pfSense ở interface DB (vtnet2)}
+    \label{fig:pfsense-packet-capture}
+\end{figure}
+
+
+\item Kết quả ghi nhận packet:
+
+\begin{center}
+\texttt{192.168.6.228}
+$\rightarrow$
+\texttt{192.168.7.251:5432}
+\end{center}
+
+$\rightarrow$ Đều xuất hiện trên interface \textbf{WEB} và trên interface \textbf{DB}. Điều này chứng minh traffic từ Web Server \texttt{192.168.6.228} tới PostgreSQL \texttt{192.168.7.251:5432} thực sự được định tuyến và đi xuyên qua pfSense.
+
+\item Chiều phản hồi:
+
+\begin{center}
+\texttt{192.168.7.251:5432}
+$\rightarrow$
+\texttt{192.168.6.228}
+\end{center}
+
+$\rightarrow$ Cũng được quan sát trên cả hai interface, qua đó chứng minh đường truyền hai chiều giữa Web Server và PostgreSQL hoạt động bình thường thông qua pfSense.
+
+
+%========================================================================================
+% 11. DOMAIN VÀ HTTPS
+%========================================================================================
+
+\end{itemize}
+
+\section{Domain và bảo mật truy cập}
+
+\subsection{DNS và Domain}
+
+\begin{itemize}
+
+\item Trong kiến trúc hoàn chỉnh, Domain được cấu hình trỏ đến Public Load Balancer. Từ IP Public \texttt{42.96.39.242} được trỏ bởi \texttt{https://cmc-cloud-hcm1.cloud/}. Sau đó người dùng có thể truy cập App thông qua Domain.
+
+\item Luồng hoạt động:
+
+\begin{center}
+Domain
+$\rightarrow$
+Public ELB
+$\rightarrow$
+Frontend
+\end{center}
+
+\item Public ELB trở thành điểm truy cập duy nhất của người dùng thay vì truy cập trực tiếp từng Frontend Server.
+
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/dns_mat_bao.png}
+    \caption{Cloudflare đứng trước hạ tầng cloud để hứng traffic và bảo vệ}
+\end{figure}
+\subsection{HTTPS}
+
+\begin{itemize}
+
+\item Hệ thống có thể triển khai HTTPS tại Public Load Balancer hoặc tại tầng Reverse Proxy tùy theo mô hình certificate.
+
+\item Traffic public khi triển khai hoàn chỉnh có sử dụng:
+
+\begin{center}
+\texttt{HTTPS :443}
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{image/cloudflare.png}
+    \caption{Cloudflare đứng trước hạ tầng cloud để hứng traffic và bảo vệ}
+\end{figure}
+$\rightarrow$ Mã hóa dữ liệu giữa Client và hệ thống.
+
+\end{itemize}
+
+%========================================================================================
+% 12. KIỂM THỬ HỆ THỐNG
+%========================================================================================
+
+\section{Kiểm thử hệ thống}
+
+\subsection{Kiểm tra Frontend}
+
+\begin{itemize}
+
+\item Kiểm tra Nginx trên Frontend:
+
+\begin{lstlisting}[language=bash]
+curl -I http://127.0.0.1/
+\end{lstlisting}
+
+\item Kết quả mong đợi:
+
+\begin{lstlisting}
+HTTP/1.1 200 OK
+\end{lstlisting}
+
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/check-frontend-nginx.png}
+    \caption{Kết quả trả về khi kiểm tra Nginx trên Frontend}
+    \label{fig:check-frontend-nginx}
+\end{figure}
+
+\subsection{Kiểm tra Reverse Proxy}
+
+\begin{itemize}
+
+\item Trên Frontend:
+
+\begin{lstlisting}[language=bash]
+curl http://127.0.0.1/api/communities
+\end{lstlisting}
+
+\item Nếu nhận được JSON từ Backend thì có thể xác nhận luồng:
+
+\begin{center}
+Frontend
+$\rightarrow$
+Private ELB
+$\rightarrow$
+Backend
+\end{center}
+
+đang hoạt động tốt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/reverse-proxy.png}
+    \caption{Kiểm tra reverse proxy ở Frontend}
+    \label{fig:reverse-frontend}
+\end{figure}
+
+
+\end{itemize}
+
+\subsection{Kiểm tra Private Load Balancer}
+
+
+
+\begin{lstlisting}[language=bash]
+curl http://192.168.6.126/health
+\end{lstlisting}
+
+$\rightarrow$ Backend HEALTHY phải trả HTTP 200.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/plb-health-check.png}
+    \caption{Kiểm tra sức khỏe của Private Load Balancer từ Frontend}
+    \label{fig:health-check-plb}
+\end{figure}
+
+\subsection{Kiểm tra Database}
+
+\begin{itemize}
+
+\item Từ máy quản trị bastion tiến hành kết nối thử để có thể quản trị private và isolated subnet ở ngoài public subnet. 
+\begin{lstlisting}[language=bash]
+nc -zv 192.168.7.251 5432
+nc -zv 192.168.7.155 27017
+nc -zv 192.168.7.117 6379
+\end{lstlisting}
+
+\noindent $\rightarrow$ Các port được Firewall Policy cho phép đã kết nối được.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/bastion-connect.png}
+    \caption{Kết nối từ máy quản trị bastion tới các databse ở isolated subnet thành công}
+    \label{fig:bastion-connect}
+\end{figure}
+
+
+\end{itemize}
+
+\subsection{Kiểm tra Firewall Block}
+
+\begin{itemize}
+
+\item Kiểm tra rule chặn tất cả port khác ở interface WEB của pfSense:
+
+\begin{lstlisting}[language=bash]
+nc -zv -w 3 192.168.7.251 22
+\end{lstlisting}
+
+$\rightarrow$ Port 22 không thuộc policy Database phải bị chặn.
+
+\item Kiểm tra rule chặn Frontend 1 và 2 truy cập đến Database ở interface WAN của pfSense:
+
+\begin{lstlisting}[language=bash]
+nc -zv -w 3 192.168.7.251 5432
+nc -zv -w 3 192.168.7.117 6379
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/block.png}
+    \caption{Chặn thành công truy cập Database từ Frontend}
+    \label{fig:block}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/WAN_rule.png}
+    \caption{Luật chặn ở toàn bộ public subnet chỉ cho mỗi máy bastion quản trị isolated subnet}
+    \label{fig:wan-rule}
+\end{figure}
+
+\end{itemize}
+
+\subsection{Kiểm tra Public Load Balancer}
+
+\begin{itemize}
+
+\item Sau khi cả hai Frontend được đưa vào Frontend Pool, kiểm tra bằng cách gửi nhiều request đến Public ELB. Ví dụ:
+
+\begin{lstlisting}[language=bash]
+curl -I http://42.96.39.242/
+\end{lstlisting}
+
+Public ELB hoạt động bình thường nên hệ thống đã trả HTTP 200.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{image/plb.png}
+    \caption{Public Load Balancer hoạt động ổn định}
+    \label{fig:plb}
+\end{figure}
+
+\end{itemize}
+%========================================================================================
+% 13. KẾT QUẢ TRIỂN KHAI
+%========================================================================================
+
+\section{Kết quả triển khai}
+
+\subsection{Kết quả đạt được}
+
+Sau quá trình triển khai, hệ thống đạt được các kết quả chính:
+
+\begin{itemize}
+    \item Phân tách rõ ràng Public, Application và Database Subnet.
+    \item Triển khai hai Frontend Server sau Public Load Balancer.
+    \item Triển khai Private Load Balancer cho tầng Backend.
+    \item Backend không cần Public IP để phục vụ người dùng.
+    \item Triển khai Auto Scaling Group cho Backend.
+    \item Backend Auto Scaling có thể tham gia Backend Pool.
+    \item Traffic Backend đến Database được ép route qua pfSense.
+    \item pfSense kiểm soát các Database Port được phép.
+    \item Các port không thuộc policy bị chặn.
+    \item Database được đặt trong Isolated Subnet.
+    \item Bastion Host được sử dụng làm điểm quản trị tập trung.
+    \item WebGUI pfSense được truy cập thông qua SSH Tunnel.
+\end{itemize}
+
+\subsection{Các vấn đề gặp phải}
+
+Trong quá trình triển khai, một số vấn đề kỹ thuật được ghi nhận:
+
+\begin{enumerate}
+    \item Backend ban đầu có thể đi đến Database qua gateway mặc định
+    của Cloud thay vì pfSense.
+
+    \item Cần bổ sung route riêng để ép Database Traffic đi qua
+    interface WEB của pfSense.
+
+    \item Port Security của Cloud yêu cầu cấu hình phù hợp
+    để pfSense có thể forward traffic giữa các subnet.
+
+    \item Health Monitor của Load Balancer từng báo Backend
+    ở trạng thái ERROR khi Security Group chưa cho phép traffic.
+
+    \item Auto Scaling Instance cần có cấu hình route và service
+    tự động ngay sau khi boot.
+
+    \item WebGUI của pfSense không thể truy cập trực tiếp bằng Private IP
+    từ máy cá nhân bên ngoài VPC.
+\end{enumerate}
+
+\subsection{Giải pháp xử lý}
+
+Các giải pháp chính bao gồm:
+
+\begin{enumerate}
+    \item Cấu hình route:
+
+\begin{lstlisting}[language=bash]
+ip route replace 192.168.7.0/24 \
+via 192.168.6.25 dev ens3
+\end{lstlisting}
+
+    \item Cấu hình Security Group phù hợp cho các interface pfSense.
+
+    \item Cấu hình Allowed Address Pair để pfSense có thể
+    forward traffic giữa nhiều subnet.
+
+    \item Cấu hình Firewall Rule theo nguyên tắc
+    Allow các Database Port cần thiết và Block các port còn lại.
+
+    \item Sử dụng Health Monitor \texttt{/health}
+    cho Backend Pool.
+
+    \item Sử dụng Golden Image và Auto Scaling Configuration
+    để tạo Backend mới với cấu hình đồng nhất.
+
+    \item Sử dụng Bastion và SSH Local Port Forwarding
+    để truy cập pfSense WebGUI.
+\end{enumerate}
+
+%========================================================================================
+% 14. CÁC HÌNH ẢNH MINH CHỨNG CẦN BỔ SUNG
+%========================================================================================
+
+
+% \begin{enumerate}
+%     \item Mô hình kiến trúc tổng thể Clouddit.
+%     \item Public Load Balancer Overview.
+%     \item Public Load Balancer Listener.
+%     \item Frontend Pool với Frontend-1 và Frontend-2.
+%     \item Private Load Balancer Overview.
+%     \item Private ELB Backend Pool.
+%     \item Health Monitor của Backend Pool.
+%     \item Auto Scaling Group.
+%     \item Auto Scaling Configuration.
+%     \item Backend Instance do Auto Scaling tạo.
+%     \item Danh sách ba interface WAN, WEB và DB của pfSense.
+%     \item Security Group của pfSense.
+%     \item Allowed Address Pair của interface WEB.
+%     \item Allowed Address Pair của interface DB.
+%     \item Firewall Rules trên interface WEB.
+%     \item Kết quả \texttt{ip route get 192.168.7.251}.
+%     \item Kết quả kết nối PostgreSQL port 5432 thành công.
+%     \item Kết quả MongoDB port 27017 thành công.
+%     \item Kết quả Redis port 6379 thành công.
+%     \item Kết quả port 22 bị Firewall chặn.
+%     \item Firewall Log với các bản ghi PASS và BLOCK.
+%     \item pfSense State Table.
+%     \item Packet Capture trên interface WEB.
+%     \item Packet Capture trên interface DB.
+%     \item SSH Tunnel từ máy Admin đến Bastion.
+%     \item Giao diện pfSense WebGUI thông qua tunnel.
+%     \item Giao diện ứng dụng Clouddit.
+
+
+%========================================================================================
+% 15. KẾT LUẬN
+%========================================================================================
+
+\section{Kết luận}
+
+\subsection{Đánh giá hệ thống}
+
+\begin{itemize}
+
+\item Project đã xây dựng được một kiến trúc Cloud nhiều lớp trên CMC Cloud, trong đó các thành phần Public, Application và Database được phân tách
+theo từng subnet.
+
+\item Public Load Balancer giúp phân phối traffic đến nhiều Frontend.
+Frontend Nginx vừa phục vụ giao diện, vừa Reverse Proxy API
+đến Private Load Balancer.
+
+\item Private Load Balancer phân phối request đến nhiều Backend Node.js
+và có thể tích hợp Auto Scaling Group để tăng khả năng mở rộng.
+
+\item Traffic từ Backend đến Database không được đi trực tiếp qua
+gateway mặc định mà được định tuyến qua pfSense.
+Firewall chỉ cho phép các Database Port cần thiết và chặn những
+traffic không phù hợp với policy.
+
+\item Bastion Host giúp tập trung luồng quản trị,
+trong khi SSH Tunnel cho phép quản trị pfSense WebGUI
+mà không cần mở trực tiếp giao diện này cho toàn bộ Internet.
+
+\end{itemize}
+\subsection{Hướng phát triển}
+
+Trong tương lai, hệ thống có thể tiếp tục được nâng cấp theo các hướng:
+
+\begin{itemize}
+    \item Hoàn thiện Auto Scaling Trigger dựa trên CPU hoặc các metric khác.
+    \item Chuyển toàn bộ Backend sang quản lý bởi Auto Scaling Group.
+    \item Triển khai Object Storage để lưu hình ảnh thay vì lưu trực tiếp
+    dữ liệu ảnh trong Database.
+    \item Triển khai HTTPS và Domain cho Public Load Balancer.
+    \item Triển khai PostgreSQL Replication hoặc giải pháp HA cho tầng Database.
+    \item Triển khai Redis HA hoặc Redis Cluster.
+    \item Thiết lập hệ thống Monitoring và Alerting.
+    \item Xây dựng CI/CD Pipeline để tự động hóa quá trình triển khai ứng dụng.
+    \item Tập trung hóa log của Frontend, Backend, Load Balancer và Firewall.
+\end{itemize}
+
+
+\section{Hướng dẫn triển khai Clouddit}
+
+\textbf{Truy cập tại đường liên kết này:} 
+
+\begin{center}
+    \texttt{https://redisrealtimearchitectureguide.vercel.app}
+\end{center}
+
+%----------------------------------------------------------------------------------------
+% KẾT THÚC
+%----------------------------------------------------------------------------------------
+
+\vspace{2cm}
+
+\begin{center}
+    \textbf{\Large Hết}
+\end{center}
+
+%----------------------------------------------------------------------------------------
+% BÌA CUỐI
+%----------------------------------------------------------------------------------------
+
+\clearpage
+
+\begin{titlepage}
+
+    \thispagestyle{empty}
+
+    \AddToShipoutPictureBG*{%
+        \AtPageLowerLeft{%
+            \includegraphics[
+                width=\paperwidth,
+                height=\paperheight
+            ]{image/cmctelecom.jpg}%
+        }%
+    }
+
+    \null
+
+\end{titlepage}
+
+\end{document}

@@ -423,13 +423,16 @@
    ├──> MongoDB (192.168.7.155:27017)
    └──> Redis Broker (192.168.7.117:6379)
         </pre>
-    
-    <div style="margin-top:24px;margin-bottom:12px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
-      <h4 style="margin-bottom:12px;font-weight:500;color:var(--text-main);">Hình ảnh Sơ đồ Kiến trúc CMC Cloud thực tế (Topology):</h4>
-      <img src="./slide/cmc-cloud-architecture.png" alt="CMC Cloud Architecture Topology" style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-    </div>
-  </div>
-</section>
+
+        <div
+          style="margin-top:24px;margin-bottom:12px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
+          <h4 style="margin-bottom:12px;font-weight:500;color:var(--text-main);">Hình ảnh Sơ đồ Kiến trúc CMC Cloud thực
+            tế (Topology):</h4>
+          <img src="./cmc-cloud-architecture.png" alt="CMC Cloud Architecture Topology"
+            style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        </div>
+      </div>
+    </section>
 
     <!-- SECTION 2 -->
     <section id="subnets">
@@ -731,24 +734,27 @@ sudo systemctl reload nginx</code></pre>
 
         BrowserB ---|WebSocket Connection| Node1
 
-          Node2 -->|1. Lưu Comment/Upvote| Postgres
-          Node2 -->|2. Lưu Document thông báo| Mongo
-          Node2 -->|3. Tăng unread count INCR| Redis
-          Node2 -->|4. Publish sự kiện tới channel 'notifications'| Redis
+        Node2 -->|1. Lưu Comment/Upvote| Postgres
+        Node2 -->|2. Lưu Document thông báo| Mongo
+        Node2 -->|3. Tăng unread count INCR| Redis
+        Node2 -->|4. Publish sự kiện tới channel 'notifications'| Redis
 
-          Redis -.->|5. Broadcast sự kiện qua Pub/Sub| Node1
-          Redis -.->|Broadcast sự kiện qua Pub/Sub| Node2
+        Redis -.->|5. Broadcast sự kiện qua Pub/Sub| Node1
+        Redis -.->|Broadcast sự kiện qua Pub/Sub| Node2
 
-          Node1 -->|6. Gửi event 'notification' qua WS| BrowserB
+        Node1 -->|6. Gửi event 'notification' qua WS| BrowserB
       </div>
-  </div>
+      </div>
 
-  <div style="margin-top:24px;margin-bottom:24px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
-    <h4 style="margin-bottom:12px;font-weight:500;color:var(--text-main);">Hình ảnh sơ đồ phân tích luồng Redis Pub/Sub thực tế:</h4>
-    <img src="./slide/redis-pub-sub-work.png" alt="Redis Pub/Sub Sync Flow Diagram" style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-  </div>
+      <div
+        style="margin-top:24px;margin-bottom:24px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
+        <h4 style="margin-bottom:12px;font-weight:500;color:var(--text-main);">Hình ảnh sơ đồ phân tích luồng Redis
+          Pub/Sub thực tế:</h4>
+        <img src="./redis-pub-sub-work.png" alt="Redis Pub/Sub Sync Flow Diagram"
+          style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+      </div>
 
-  <h3 style="margin-top: 24px;">Sơ đồ Tuần tự bộ đệm Caching (Unread Count):</h3>
+      <h3 style="margin-top: 24px;">Sơ đồ Tuần tự bộ đệm Caching (Unread Count):</h3>
       <div class="mermaid"
         style="margin-top: 16px; margin-bottom: 24px; background: #0b0f19; border-radius: 12px; padding: 16px; border: 1px solid var(--border-color);">
         sequenceDiagram
@@ -779,20 +785,37 @@ sudo systemctl reload nginx</code></pre>
       <h3 style="margin-top: 24px;">Chi tiết về Cơ chế Redis Pub/Sub:</h3>
       <div class="callout" style="background-color: rgba(99, 102, 241, 0.05); border-left-color: var(--brand-color);">
         <h5>📡 Kênh sự kiện Pub/Sub là gì?</h5>
-        <p><strong>Pub/Sub (Publish/Subscribe - Phát/Đăng ký)</strong> là mô hình truyền tin nhắn bất đồng bộ mà người gửi (Publisher) và người nhận (Subscriber) không giao tiếp trực tiếp. Thay vào đó, chúng kết nối thông qua một <strong>Kênh (Channel)</strong> trung gian.</p>
+        <p><strong>Pub/Sub (Publish/Subscribe - Phát/Đăng ký)</strong> là mô hình truyền tin nhắn bất đồng bộ mà người
+          gửi (Publisher) và người nhận (Subscriber) không giao tiếp trực tiếp. Thay vào đó, chúng kết nối thông qua một
+          <strong>Kênh (Channel)</strong> trung gian.
+        </p>
         <ul>
-          <li><strong>Publisher (Node.js gửi tin)</strong>: Chỉ cần đẩy gói tin thông báo vào kênh chung (ví dụ: <code>'notifications'</code>) trên Redis mà không cần quan tâm máy chủ nào đang nhận hay có bao nhiêu Client kết nối.</li>
-          <li><strong>Subscriber (Các Node.js còn lại)</strong>: Đăng ký lắng nghe kênh chung trên Redis từ khi khởi chạy. Khi có tin nhắn mới, tất cả các Node đang online lập tức nhận được bản sao.</li>
+          <li><strong>Publisher (Node.js gửi tin)</strong>: Chỉ cần đẩy gói tin thông báo vào kênh chung (ví dụ:
+            <code>'notifications'</code>) trên Redis mà không cần quan tâm máy chủ nào đang nhận hay có bao nhiêu Client
+            kết nối.
+          </li>
+          <li><strong>Subscriber (Các Node.js còn lại)</strong>: Đăng ký lắng nghe kênh chung trên Redis từ khi khởi
+            chạy. Khi có tin nhắn mới, tất cả các Node đang online lập tức nhận được bản sao.</li>
         </ul>
       </div>
 
       <div class="callout" style="background-color: rgba(16, 185, 129, 0.05); border-left-color: var(--accent-green);">
         <h5>🚀 Tại sao chọn Redis làm kênh Pub/Sub cho hệ thống?</h5>
         <ul>
-          <li><strong>Giải quyết bài toán Cluster WebSockets</strong>: Khi <strong>User B</strong> kết nối WebSocket tới <strong>EC2-1</strong>, nhưng request hành động của <strong>User A</strong> lại được ALB chuyển tới <strong>EC2-2</strong> để xử lý. Nhờ Redis Pub/Sub, <code>EC2-2</code> chỉ cần bắn tin lên Redis, Redis sẽ tự động phát sóng (broadcast) sang <code>EC2-1</code> để <code>EC2-1</code> đẩy tin trực tiếp tới trình duyệt User B.</li>
-          <li><strong>Tốc độ cực nhanh (In-Memory)</strong>: Nhờ chạy hoàn toàn trên RAM, thời gian truyền tải thông báo giữa các server thông qua Redis Pub/Sub chỉ mất chưa tới <strong>1 mili-giây</strong>.</li>
-          <li><strong>Bắn rồi quên (Fire-and-Forget)</strong>: Redis Pub/Sub không lưu trữ lịch sử tin nhắn trên RAM hay ổ đĩa. Nó chỉ đẩy tin tới các Node đang hoạt động rồi xóa ngay lập tức, giúp tránh phình bộ nhớ hệ thống.</li>
-          <li><strong>Tối ưu hạ tầng</strong>: Bạn tận dụng luôn server Redis hiện tại đang làm nhiệm vụ Caching đếm số lượng chưa đọc mà không cần cài đặt thêm các hệ thống Message Broker nặng nề khác (như RabbitMQ hay Kafka).</li>
+          <li><strong>Giải quyết bài toán Cluster WebSockets</strong>: Khi <strong>User B</strong> kết nối WebSocket tới
+            <strong>EC2-1</strong>, nhưng request hành động của <strong>User A</strong> lại được ALB chuyển tới
+            <strong>EC2-2</strong> để xử lý. Nhờ Redis Pub/Sub, <code>EC2-2</code> chỉ cần bắn tin lên Redis, Redis sẽ
+            tự động phát sóng (broadcast) sang <code>EC2-1</code> để <code>EC2-1</code> đẩy tin trực tiếp tới trình
+            duyệt User B.
+          </li>
+          <li><strong>Tốc độ cực nhanh (In-Memory)</strong>: Nhờ chạy hoàn toàn trên RAM, thời gian truyền tải thông báo
+            giữa các server thông qua Redis Pub/Sub chỉ mất chưa tới <strong>1 mili-giây</strong>.</li>
+          <li><strong>Bắn rồi quên (Fire-and-Forget)</strong>: Redis Pub/Sub không lưu trữ lịch sử tin nhắn trên RAM hay
+            ổ đĩa. Nó chỉ đẩy tin tới các Node đang hoạt động rồi xóa ngay lập tức, giúp tránh phình bộ nhớ hệ thống.
+          </li>
+          <li><strong>Tối ưu hạ tầng</strong>: Bạn tận dụng luôn server Redis hiện tại đang làm nhiệm vụ Caching đếm số
+            lượng chưa đọc mà không cần cài đặt thêm các hệ thống Message Broker nặng nề khác (như RabbitMQ hay Kafka).
+          </li>
         </ul>
       </div>
     </section>
@@ -843,15 +866,11 @@ sudo systemctl reload nginx</code></pre>
         <li>Xóa cache trình duyệt (nhấn <code>Ctrl + F5</code> hoặc <code>Cmd + Shift + R</code>) để trình duyệt nhận
           diện file JavaScript mới. Mở F12 kiểm tra log thành công:
           <code style="color: var(--accent-green);">Connected to Socket.io notification server</code>
-      </li>
-    </ol>
+        </li>
+      </ol>
 
-    <h3 style="margin-top:24px;">Kết quả Kiểm thử & Chạy thực tế (Demo Results):</h3>
-    <p>Dưới đây là hình ảnh ghi nhận kết quả kiểm thử chạy thực tế của hệ thống Clouddit (bao gồm hoạt động thông báo đẩy thời gian thực và logs kiểm tra tải):</p>
-    <div style="margin-top:20px;text-align:center;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
-      <img src="./demo_images/Screenshot 2026-08-18 at 16.03.51.png" alt="Demo kết quả kiểm thử thực tế" style="width:100%;max-width:850px;border-radius:8px;border:1px solid var(--border-color);box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-    </div>
-  </section>
+
+    </section>
 
     <!-- SECTION 9 -->
     <section id="troubleshooting">
