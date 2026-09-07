@@ -1,0 +1,57 @@
+Type,Project,Resource Name,Resource ID,Parent,Start Time,End Time,Plan,CPU (Core),RAM (GB),System Disk (GB),Data Disk (GB),Unit Price,Billing Mode,Tags,Usage,Amount (VND) (Before Discount),Discount (%),Amount (VND) (After Discount)
+EC,hcm-1,pfSense,080f9d61-d9fa-4230-af57-a0a2aee966ab,,2026-09-01 00:00:00,2026-09-03 23:59:59,4 vCPUs - 4 GB RAM,4,4,,,900000.000,monthly,,0 days,0.000,0,0.000
+EC,hcm-1,ecs-tc6b-bastion,18781580-12d3-4c6d-9fb9-c8408f597c01,,2026-09-01 00:00:00,2026-09-03 23:59:59,1 vCPUs - 2 GB RAM,1,2,,,300000.000,monthly,,0 days,0.000,0,0.000
+EC,hcm-1,ecs-private-chat,7433523b-c5bc-4fd7-96ce-70282d088339,,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 8 GB RAM,2,8,,,900000.000,monthly,,0 days,0.000,0,0.000
+EC,hcm-1,private_web_server_1,9d88ba6a-1f35-4616-955d-8f24ba49dd02,,2026-09-01 00:00:00,2026-09-03 23:59:59,8 vCPUs - 8 GB RAM,8,8,,,1800000.000,monthly,,0 days,0.000,0,0.000
+EC,hcm-1,ecs-db-test,c23d3e82-e13e-4409-851f-8bf16b9afd90,,2026-09-01 00:00:00,2026-09-03 23:59:59,1 vCPUs - 1 GB RAM,1,1,,,225000.000,monthly,,0 days,0.000,0,0.000
+EC,hcm-1,private_web_server_2,c9737e6b-57d3-4374-8160-19b359771483,,2026-09-01 00:00:00,2026-09-03 23:59:59,8 vCPUs - 8 GB RAM,8,8,,,1800000.000,monthly,,0 days,0.000,0,0.000
+EC,hcm-1,reddit-frontend,dcf96984-d1f6-4e7e-bab8-e6ddf250aaaf,,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 2 GB RAM,2,2,,,450000.000,monthly,,0 days,0.000,0,0.000
+EC,hcm-1,reddit-frontend2,f85f9f2a-be4e-430f-86fc-df2902b9cee9,,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 2 GB RAM,2,2,,,450000.000,monthly,,0 days,0.000,0,0.000
+REDIS,hcm-1,nc7jqwzsuh2f_redis_master_instance_6cb8b6eb-7b11-4aac-bf5f-fb43677fc4df,0c76f292-aa21-4f24-acf2-9d2f81c4591a,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+REDIS,hcm-1,nc7jqwzsuh2f_redis_master_instance_6cb8b6eb-7b11-4aac-bf5f-fb43677fc4df,59a43136-64fa-4b18-a047-420d76fef68e,redis_production,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+POSTGRESQL,hcm-1,nc7jqwzsuh2f_postgresql_master_instance_9e89bb9b-fe88-4579-81e2-d10ffc9185f6,11b6e1e9-ea3b-485c-a518-8986a950a0b6,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+POSTGRESQL,hcm-1,nc7jqwzsuh2f_postgresql_master_instance_50f3098a-f3a7-4b94-821c-8e35c1745279,b55ea737-8cc0-4532-8b48-bd47324c81c7,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+POSTGRESQL,hcm-1,nc7jqwzsuh2f_postgresql_master_instance_0718a05f-d128-4c1b-86d8-ca64677a0d29,d67458d7-a36c-49af-96c5-42531c580396,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+POSTGRESQL,hcm-1,nc7jqwzsuh2f_postgresql_master_instance_9e89bb9b-fe88-4579-81e2-d10ffc9185f6,ff60eb94-02fd-42f1-afcb-e7f1130ce2dd,posgresql_skibidi,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+POSTGRESQL,hcm-1,nc7jqwzsuh2f_postgresql_master_instance_50f3098a-f3a7-4b94-821c-8e35c1745279,c79934b5-9983-47e3-89a2-6f2bc7638585,postgre_production,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+POSTGRESQL,hcm-1,nc7jqwzsuh2f_postgresql_master_instance_0718a05f-d128-4c1b-86d8-ca64677a0d29,80b3f1bc-bca0-40b8-9d37-ff9400f28c00,rds_postgres-43m7,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_484d2f4c-615a-4588-a980-afef1eb616ad,1541d69b-7e6e-4e0d-b17f-9f5cd5334409,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_b99eb7e4-a636-475a-899f-b4261c064302,4e423859-a7c7-4684-901d-119037d51d5d,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_54bd7bd9-6bc2-443e-81c3-6c553f189d58,7473a689-8243-4836-aedd-0f68edd88abb,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_d42c7371-de6d-42d7-825e-b95f529d63ff,c0b27b72-1550-45c9-91ec-77c864be1de9,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_484d2f4c-615a-4588-a980-afef1eb616ad,21e61077-ae41-41ec-af09-7065b660152d,mongodb-hf6d,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_d42c7371-de6d-42d7-825e-b95f529d63ff,811dc6e6-e347-4d7d-b9f0-265bd0ac7409,mongodb-jes7,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_b99eb7e4-a636-475a-899f-b4261c064302,a4def5fc-9919-4fe3-b9f6-ce4330d353ce,mongodb-jv7q-test,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+MONGO,hcm-1,nc7jqwzsuh2f_mongodb_primary_instance_54bd7bd9-6bc2-443e-81c3-6c553f189d58,c970d394-1827-4dfa-a483-5148033334bd,mongo_production,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+EIP,hcm-1,101.99.59.170,1ce8b574-17e0-4932-b271-5848a5a0d68b,,2026-09-01 00:00:00,2026-09-03 23:59:59,500-30 Mbps,,,,,100000.000,monthly,,0 days,0.000,0,0.000
+EIP,hcm-1,101.99.59.186,516e54c9-1192-445b-89a5-a8961aa64745,,2026-09-01 00:00:00,2026-09-03 23:59:59,500-30 Mbps,,,,,100000.000,monthly,,0 days,0.000,0,0.000
+EIP,hcm-1,101.99.59.197,63318d21-a724-4bbc-8f3b-d5c1279bd75c,,2026-09-01 00:00:00,2026-09-03 23:59:59,500-30 Mbps,,,,,100000.000,monthly,,0 days,0.000,0,0.000
+EIP,hcm-1,101.99.59.220,aaa49fc8-922a-4ab3-8e37-034778731394,,2026-09-01 00:00:00,2026-09-03 23:59:59,500-30 Mbps,,,,,100000.000,monthly,,0 days,0.000,0,0.000
+EIP,hcm-1,101.99.59.233,e38bc167-d9e7-45bf-b6a5-0819eab4765d,,2026-09-01 00:00:00,2026-09-03 23:59:59,500-30 Mbps,,,,,100000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,reddit-volume-backup,1e6850ad-17ca-4c91-a83d-869d766ddeeb,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,ev-v4-image-fe-reddit,1fd285d7-9e1c-48ac-8a87-216d85cde26b,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-ecs-tc6b-bastion,2820c0cc-1eab-490f-a97a-1d911ac3e60e,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-private_web_server_1,432f3501-3064-4bc8-84d7-83512e6a6f3d,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,ev-image-frontend-reddit-backup-newest,5eb704fe-bccb-4440-8d50-0ba8d7176311,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-ecs-private-chat,60c9dca3-8059-4e1f-a278-73460a554ebd,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-ecs-db-test,70bb9066-a8dd-41ff-8647-e63de6e256a6,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,ev-v3-reddit-fe-image,736ca225-f1c3-417a-b50c-6dedd5e9d801,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-reddit-frontend2,822639d3-e71d-47b5-8151-379a3306ebcc,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,backend-1-backup-volume,864a0179-4f4d-43a4-928b-ae46613f8f89,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-private_web_server_2,8a3ade90-e185-4941-afd2-4ce4c1a8c992,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,ev-v4-fe,a5e6a4fe-c4c0-4c10-b9a6-62925fa4edbf,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,ev-frontend-backup,c32d31c7-80a1-456d-8711-70cf83a6bd44,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-pfSense,e3e0e609-c22e-47f0-9fb3-04f08d8f1fb1,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,backend-1-backup-volume,faf53107-29f2-4897-b2a5-3a2640d654fa,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+EV,hcm-1,root-reddit-frontend,fda23299-cb68-4f8a-a7bd-f0425c15c26a,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+VPC,hcm-1,vpc-nghich-ngom,3212f9ff-f519-49f4-a72b-ace39a4b46fe,,2026-09-01 00:00:00,2026-09-03 23:59:59,,,,,,400000.000,monthly,,0 days,0.000,0,0.000
+VPC,hcm-1,cmc-prod-hcm1-vpc,a6fa78b3-b767-4a0d-8c2e-9fef684416e8,,2026-09-01 00:00:00,2026-09-03 23:59:59,,,,,,400000.000,monthly,,0 days,0.000,0,0.000
+MYSQL,hcm-1,nc7jqwzsuh2f_mysql_master_instance_74a8b7dd-3d30-4e89-817e-139e477e8be2,653b18cd-eb3c-4436-a017-857171b86fad,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+MYSQL,hcm-1,nc7jqwzsuh2f_mysql_master_instance_426ee642-e4da-4cc6-b1fe-e9bffe27118d,cd5c2f1c-15ef-4afa-97d7-e8c8a15814ad,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+MYSQL,hcm-1,nc7jqwzsuh2f_mysql_master_instance_426ee642-e4da-4cc6-b1fe-e9bffe27118d,9b50815f-9def-46a3-a644-1f671cd97a79,mysql,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+MYSQL,hcm-1,nc7jqwzsuh2f_mysql_master_instance_74a8b7dd-3d30-4e89-817e-139e477e8be2,39374967-663a-4361-b173-1d2a910d63b8,mysql_holysheet,2026-09-01 00:00:00,2026-09-03 23:59:59,2 vCPUs - 4 GB RAM - 100 GB SSD,,,,,870000.000,monthly,,0 days,0.000,0,0.000
+S3,hcm-1,S3 Data Transfer,865b2d23-7318-4dc9-aa97-32daa5a041bd,,2026-09-01 00:00:00,2026-09-03 23:59:59,0 GB Data Transfer,,,,,250.000,unit,,0,0.000,0,0.000
+S3,hcm-1,S3 - Standard,865b2d23-7318-4dc9-aa97-32daa5a041bd,,2026-09-01 00:00:00,2026-09-03 23:59:59,1000 GB Standard,,,,,1000000.000,monthly,,0 days,0.000,0,0.000
+AS,hcm-1,as-group-fe-reddit-asg-qycpxwrfth64-q5pe5jvh3tbn-w5qeq3d4s6b3-volume_1-ju67r26xlm3j,a68413cc-d78f-414e-b52a-61ee63ee23dd,,2026-09-01 00:00:00,2026-09-03 23:59:59,20 GB highio,,,,,54000.000,monthly,,0 days,0.000,0,0.000
+ELB,hcm-1,reddit-backend-alb,c2de3dd5-1e0d-4efa-a20f-d77e0b0d45b4,,2026-09-01 00:00:00,2026-09-03 23:59:59,medium-lb,,,,,510000.000,monthly,,0 days,0.000,0,0.000
+CB,hcm-1,vault-vs26,ff775c1e-fc0b-4237-8a1d-832287fe2b70,,2026-09-01 00:00:00,2026-09-03 23:59:59,1000 GB,,,,,1000000.000,monthly,,0 days,0.000,0,0.000
